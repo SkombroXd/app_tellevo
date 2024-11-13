@@ -1,13 +1,39 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>datosvehiculo</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">datosvehiculo</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Contenedor principal -->
+  <ion-content>
+    <!-- Título superior con fondo azul -->
+    <div class="header">
+      <h1>INFORMACIÓN VEHÍCULO</h1>
+    </div>
+
+    <!-- Formulario de información de vehículo -->
+    <div class="signup-form">
+      <ion-list>
+
+        <!-- Campo Patente Vehículo -->
+        <ion-item class="input-field">
+          <ion-input type="text" placeholder="Patente Vehículo"></ion-input>
+        </ion-item>
+
+        <!-- Campo Marca -->
+        <ion-item class="input-field">
+          <ion-input type="text" placeholder="Marca"></ion-input>
+        </ion-item>
+
+        <!-- Campo Modelo -->
+        <ion-item class="input-field">
+          <ion-input type="text" placeholder="Modelo"></ion-input>
+        </ion-item>
+
+        <!-- Campo Color -->
+        <ion-item class="input-field">
+          <ion-input type="text" placeholder="Color"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <!-- Botón de actualizar información -->
+      <ion-button [routerLink]="['/tabconductor/homeconductor']" expand="block" class="signup-button">Agregar Vehiculo</ion-button>
+    </div>
+  </ion-content>
 </ion-content>

@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { TabsComponent } from './components/tabs/tabs.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -27,18 +24,12 @@ const routes: Routes = [
     path: 'perfilconductor',
     loadChildren: () => import('./pages/perfilconductor/perfilconductor.module').then( m => m.PerfilconductorPageModule)
   },
-  {
-    path: 'perfilpasajero',
-    loadChildren: () => import('./pages/perfilpasajero/perfilpasajero.module').then( m => m.PerfilpasajeroPageModule)
-  },
+
   {
     path: 'viajesconductor',
     loadChildren: () => import('./pages/viajesconductor/viajesconductor.module').then( m => m.ViajesconductorPageModule)
   },
-  {
-    path: 'viajespasajero',
-    loadChildren: () => import('./pages/viajespasajero/viajespasajero.module').then( m => m.ViajespasajeroPageModule)
-  },
+
   {
     path: 'datosvehiculo',
     loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then( m => m.DatosvehiculoPageModule)
@@ -47,6 +38,26 @@ const routes: Routes = [
     path: 'homec',
     loadChildren: () => import('./pages/homec/homec.module').then( m => m.HomecPageModule)
   },
+  {
+    path: 'tabs',
+    component: TabsComponent,
+    children:[
+      {
+        path: 'perfilpasajero',
+        loadChildren: () => import('./pages/perfilpasajero/perfilpasajero.module').then( m => m.PerfilpasajeroPageModule)
+      },
+      {
+        path: 'viajespasajero',
+        loadChildren: () => import('./pages/viajespasajero/viajespasajero.module').then( m => m.ViajespasajeroPageModule)
+      },
+      {
+        path: 'home',
+        loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+      }
+    ]
+  },
+
+
 ];
 
 @NgModule({

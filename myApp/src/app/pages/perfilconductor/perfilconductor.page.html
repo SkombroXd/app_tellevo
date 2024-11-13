@@ -1,13 +1,42 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>perfilconductor</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfilconductor</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-content>
+    <!-- Encabezado con el título -->
+    <div class="header">
+      <h1>TE LLEVO!</h1>
+    </div>
+  
+    <!-- Sección del perfil del usuario -->
+    <div class="profile-section">
+      <img src="../../../assets/servicio-al-cliente.png" alt="Avatar" class="avatar">
+      <div class="user-info">
+        <h2>Kevin Fierro</h2>
+        <div class="rating">
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star-outline"></ion-icon>
+        </div>
+        <p><strong>Viajes Realizados:</strong> 23</p>
+      </div>
+    </div>
+  
+    <!-- Opciones de edición e información del vehículo -->
+    <div class="option-list">
+      <div class="option-item">
+        <p>EDITAR INFORMACION</p>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+      <div class="option-item">
+        <p>MI VEHICULO</p>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+  
+    <!-- Enlaces para cerrar sesión y eliminar cuenta -->
+    <div class="footer-links">
+      <a [routerLink]="['/tipocuenta']" class="delete-account">Cambiar tipo de cuenta</a>
+      <a [routerLink]="['/login']">Cerrar sesión</a>
+    </div>
+  </ion-content>  
 </ion-content>
