@@ -12,6 +12,7 @@ export class LoginPage implements OnInit {
   usr:Usuario={
     id:Date.now().toString(),
     nombre:"",
+    apellido:"",
     email:"",
     password:"",
   }
