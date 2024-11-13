@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './components/tabs/tabs.component';
+import { TabscComponent } from './components/tabsc/tabsc.component';
 
 const routes: Routes = [
   {
@@ -21,22 +22,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then( m => m.TipocuentaPageModule)
   },
   {
-    path: 'perfilconductor',
-    loadChildren: () => import('./pages/perfilconductor/perfilconductor.module').then( m => m.PerfilconductorPageModule)
-  },
-
-  {
-    path: 'viajesconductor',
-    loadChildren: () => import('./pages/viajesconductor/viajesconductor.module').then( m => m.ViajesconductorPageModule)
-  },
-
-  {
     path: 'datosvehiculo',
     loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then( m => m.DatosvehiculoPageModule)
-  },
-  {
-    path: 'homec',
-    loadChildren: () => import('./pages/homec/homec.module').then( m => m.HomecPageModule)
   },
   {
     path: 'tabs',
@@ -54,6 +41,24 @@ const routes: Routes = [
         path: 'home',
         loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
       }
+    ]
+  },
+  {
+    path: 'tabsc',
+    component: TabscComponent,
+    children:[
+      {
+        path: 'perfilconductor',
+        loadChildren: () => import('./pages/perfilconductor/perfilconductor.module').then( m => m.PerfilconductorPageModule)
+      },
+      {
+        path: 'viajesconductor',
+        loadChildren: () => import('./pages/viajesconductor/viajesconductor.module').then( m => m.ViajesconductorPageModule)
+      },
+      {
+        path: 'homec',
+        loadChildren: () => import('./pages/homec/homec.module').then( m => m.HomecPageModule)
+      },
     ]
   },
 
