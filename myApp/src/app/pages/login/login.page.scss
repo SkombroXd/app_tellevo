@@ -1,0 +1,101 @@
+/* Imagen superior */
+.header-image {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Opcional: centra verticalmente */
+  }
+  
+  .header-image img {
+    padding-top: 10%;
+    width: 100px;
+    margin-bottom: 20px;
+    max-width: 100%; /* Asegura que la imagen no desborde su contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+  }
+
+  /* Título principal */
+  .title {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .title h1 {
+    font-size: 2.4em;
+    color: #5CB3FF;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  
+  .title p {
+    font-size: 0.9em;
+    color: #888;
+    letter-spacing: 1px;
+  }
+  
+  /* Formulario de Login */
+  .login-form {
+    margin: 30px 20px;
+  }
+  
+  /* Estilo de los inputs */
+  .input-field {
+    background-color: #f0f0f0;
+    border-radius: 12px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-field ion-icon {
+    color: #5CB3FF;
+    font-size: 1.5em;
+  }
+  
+  .input-field ion-input {
+    padding-left: 10px;
+  }
+  
+  /* Recordarme y ¿Olvidaste tu contraseña? */
+  .remember-me {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .remember-me ion-label {
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  .remember-me ion-button {
+    font-size: 0.9em;
+    color: #5CB3FF;
+  }
+  
+  /* Botón de Login */
+  .login-button {
+    background-color: #5CB3FF;
+    border-radius: 20px;
+    font-size: 1.2em;
+    height: 50px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Crear cuenta */
+  .create-account {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .create-account p {
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  .create-account a {
+    color: #5CB3FF;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  

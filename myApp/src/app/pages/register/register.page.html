@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true">
+  <ion-content>
+    <!-- Título superior con fondo azul -->
+    <div class="header">
+      <h1>CREA TU CUENTA!</h1>
+    </div>
+  
+    <!-- Formulario de creación de cuenta -->
+    <div class="signup-form">
+      <ion-list>
+  
+        <!-- Campo Email -->
+        <ion-item class="input-field">
+          <ion-input type="email" placeholder="Email"></ion-input>
+        </ion-item>
+  
+        <!-- Campo Nombre -->
+        <ion-item class="input-field">
+          <ion-input type="text" placeholder="Nombre"></ion-input>
+        </ion-item>
+  
+        <!-- Campo Apellido -->
+        <ion-item class="input-field">
+          <ion-input type="text" placeholder="Apellido"></ion-input>
+        </ion-item>
+  
+        <!-- Campo Contraseña -->
+        <ion-item class="input-field">
+          <ion-input type="password" placeholder="Contraseña"></ion-input>
+          <ion-icon name="eye-off-outline" slot="end"></ion-icon>
+        </ion-item>
+  
+        <!-- Campo Repite Contraseña -->
+        <ion-item class="input-field">
+          <ion-input type="password" placeholder="Repite Contraseña"></ion-input>
+          <ion-icon name="eye-off-outline" slot="end"></ion-icon>
+        </ion-item>
+  
+        <!-- Casilla de verificación para aceptar términos -->
+        <ion-item lines="none" class="terms-checkbox">
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Acepto los <a href="#">términos y condiciones</a></ion-label>
+        </ion-item>
+  
+      </ion-list>
+  
+      <!-- Botón de crear cuenta -->
+      <ion-button [routerLink]="['/tipocuenta']" expand="block" class="signup-button">Crear Cuenta</ion-button>
+    </div>
+  </ion-content>
+</ion-content>

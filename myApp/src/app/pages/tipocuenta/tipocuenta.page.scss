@@ -1,0 +1,82 @@
+/* Saludo */
+.header {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    border: 3px solid #5CB3FF;
+    border-radius: 10px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    color: #5CB3FF;; /* Color personalizado */
+  }
+  
+  .header h2 {
+    font-weight: bold;
+    font-size: 1.8em;
+  }
+  
+  .header p {
+    font-size: 1.2em;
+    color: #5CB3FF; /* Color azul para el subtítulo */
+  }
+  
+  /* Opciones */
+  .options-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .option-card {
+    background-color: #f7f7f7;
+    border-radius: 20px;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .option-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .option-card img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .option-card h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .option-card p {
+    font-size: 1.1em;
+    color: #666;
+  }
+  
+  /* Colores específicos para cada opción */
+  .pasajero {
+    background-color: #6b95ad;
+  }
+  
+  .conductor {
+    background-color: #d49972;
+  }
+  .image-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Opcional: centra verticalmente */
+  }
+  
+  img {
+    max-width: 100%; /* Asegura que la imagen no desborde su contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+  }

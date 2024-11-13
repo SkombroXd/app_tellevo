@@ -1,0 +1,46 @@
+<ion-content [fullscreen]="true">
+  <ion-content>
+    <!-- Imagen superior -->
+    <div class="header-image">
+      <img src="../../../assets/coche.png" alt="Te llevo">
+    </div>
+  
+    <!-- Título principal -->
+    <div class="title">
+      <h1>Te Llevo!</h1>
+      <p>COMPARTE EL VIAJE, DISFRUTA EL DESTINO</p>
+    </div>
+  
+    <!-- Formulario de Login -->
+    <div class="login-form">
+      <ion-list>
+        <!-- Campo Email -->
+        <ion-item lines="none" class="input-field">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="email" placeholder="Email"></ion-input>
+        </ion-item>
+  
+        <!-- Campo Contraseña -->
+        <ion-item lines="none" class="input-field">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Contraseña"></ion-input>
+        </ion-item>
+  
+        <!-- Opción Recordarme y Olvidar contraseña -->
+        <ion-item lines="none" class="remember-me">
+          <ion-button fill="clear" slot="end" size="small" color="primary">
+            ¿Olvidaste tu contraseña?
+          </ion-button>
+        </ion-item>
+      </ion-list>
+  
+      <!-- Botón de Login -->
+      <ion-button [routerLink]="['/tipocuenta']" expand="block" class="login-button">Login</ion-button>
+  
+      <!-- Crear cuenta -->
+      <div class="create-account">
+        <p>¿Aún no tienes cuenta? <a [routerLink]="['/register']">Crea tu cuenta aquí</a></p>
+      </div>
+    </div>
+  </ion-content>
+</ion-content>
