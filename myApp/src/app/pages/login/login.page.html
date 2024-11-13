@@ -13,17 +13,18 @@
   
     <!-- Formulario de Login -->
     <div class="login-form">
+      <form (ngSubmit)="login()">
       <ion-list>
         <!-- Campo Email -->
         <ion-item lines="none" class="input-field">
           <ion-icon name="mail-outline" slot="start"></ion-icon>
-          <ion-input type="email" placeholder="Email"></ion-input>
+          <ion-input type="email" [(ngModel)]="usr.email" name="email" placeholder="Email"></ion-input>
         </ion-item>
   
         <!-- Campo Contraseña -->
         <ion-item lines="none" class="input-field">
           <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-          <ion-input type="password" placeholder="Contraseña"></ion-input>
+          <ion-input type="password" [(ngModel)]="usr.password" name="password" placeholder="Contraseña"></ion-input>
         </ion-item>
   
         <!-- Opción Recordarme y Olvidar contraseña -->
@@ -33,14 +34,15 @@
           </ion-button>
         </ion-item>
       </ion-list>
-  
+      
       <!-- Botón de Login -->
-      <ion-button [routerLink]="['/tipocuenta']" expand="block" class="login-button">Login</ion-button>
+      <ion-button type="submit" expand="block" class="login-button">Login</ion-button>
   
       <!-- Crear cuenta -->
       <div class="create-account">
         <p>¿Aún no tienes cuenta? <a [routerLink]="['/register']">Crea tu cuenta aquí</a></p>
       </div>
+    </form>
     </div>
   </ion-content>
 </ion-content>
