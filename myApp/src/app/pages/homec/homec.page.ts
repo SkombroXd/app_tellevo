@@ -14,8 +14,9 @@ export class HomecPage implements OnInit {
   lat!: number;
   lon!: number;
   destinationMarker!: mapboxgl.Marker;
-  destination: [number, number] | null = null; // Coordenadas del destino
+  destination: [number, number] | null = null;
   searchQuery: string = ''; // Dirección ingresada por el usuario
+  predictions: any[] = []; // Lista de predicciones de direcciones
 
   constructor(private http: HttpClient) {}
 
@@ -23,46 +24,71 @@ export class HomecPage implements OnInit {
     const coordinates = await Geolocation.getCurrentPosition();
     this.lat = coordinates.coords.latitude;
     this.lon = coordinates.coords.longitude;
-  
+
     (mapboxgl as any).accessToken = 'pk.eyJ1Ijoia2VmaWVycm8iLCJhIjoiY20zZ2NoYm91MDJ3cDJxcHRseGZxZnpmdyJ9.EZiJXVqhIfThpB9n3C308g';
-  
-    // Crear el mapa centrado en la ubicación actual
+
+    // Crear el mapa
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [this.lon, this.lat],
       zoom: 12,
     });
-  
-    // Agregar marcador en la ubicación inicial
-    new mapboxgl.Marker({ color: 'blue' })
-      .setLngLat([this.lon, this.lat])
-      .setPopup(new mapboxgl.Popup().setText('Ubicación actual'))
-      .addTo(this.map);
-  
-    // Inicializar el marcador del destino
+
+    // Agregar marcador de la ubicación actual
+    new mapboxgl.Marker().setLngLat([this.lon, this.lat]).addTo(this.map);
+
+    // Inicializar marcador de destino
     this.destinationMarker = new mapboxgl.Marker({ color: 'red' });
-  
-    // Escuchar clics en el mapa para seleccionar el destino
+
+    // Manejar clics en el mapa para seleccionar el destino
     this.map.on('click', (event: mapboxgl.MapMouseEvent) => {
       const lngLat = event.lngLat;
       this.setDestination([lngLat.lng, lngLat.lat]);
     });
   }
-  
 
-  // Método para buscar una dirección
+// Lógica para obtener y mostrar predicciones de direcciones
+async onSearchChange() {
+  if (this.searchQuery.length < 3) {
+    this.predictions = [];
+    return;
+  }
+
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(this.searchQuery)}.json?autocomplete=true&access_token=${(mapboxgl as any).accessToken}&limit=5`;
+
+  try {
+    const response: any = await firstValueFrom(this.http.get(url));
+    this.predictions = response.features || [];
+  } catch (error) {
+    console.error('Error al obtener predicciones:', error);
+  }
+}
+
+// Ocultar predicciones al perder foco
+hidePredictions() {
+  setTimeout(() => {
+    this.predictions = [];
+  }, 200);
+}
+
+// Seleccionar una predicción de la lista
+selectPrediction(prediction: any) {
+  const [lon, lat] = prediction.geometry.coordinates;
+  this.searchQuery = prediction.place_name;
+  this.predictions = []; // Limpiar predicciones al seleccionar
+  this.setDestination([lon, lat]);
+}
+
+
+  // Buscar una dirección específica
   async searchAddress() {
-    if (!this.searchQuery.trim()) {
-      alert('Por favor, ingresa una dirección.');
-      return;
-    }
-  
+    if (!this.searchQuery.trim()) return;
+
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(this.searchQuery)}.json?access_token=${(mapboxgl as any).accessToken}&limit=1`;
-  
+
     try {
       const response: any = await firstValueFrom(this.http.get(url));
-  
       if (response.features && response.features.length > 0) {
         const [lon, lat] = response.features[0].geometry.coordinates;
         this.setDestination([lon, lat]);
@@ -71,24 +97,18 @@ export class HomecPage implements OnInit {
       }
     } catch (error) {
       console.error('Error al buscar la dirección:', error);
-      alert('Hubo un error al buscar la dirección.');
     }
   }
-  
-  // Establecer destino y trazar la ruta
+
+  // Establecer el destino y trazar la ruta
   async setDestination(destination: [number, number]) {
     this.destination = destination;
     this.destinationMarker.setLngLat(destination).addTo(this.map);
-  
-    // Centrar el mapa en el destino
     this.map.flyTo({ center: destination, zoom: 14 });
-  
-    // Obtener y trazar la ruta
     await this.getRoute();
   }
-  
 
-  // Función para obtener y trazar la ruta
+  // Obtener y trazar la ruta en el mapa
   async getRoute() {
     if (!this.destination) return;
 
@@ -96,7 +116,6 @@ export class HomecPage implements OnInit {
 
     try {
       const response: any = await firstValueFrom(this.http.get(url));
-
       if (response.routes && response.routes.length > 0) {
         const route = response.routes[0].geometry.coordinates;
         this.drawRoute(route);
@@ -108,15 +127,13 @@ export class HomecPage implements OnInit {
     }
   }
 
-  // Función para trazar la ruta en el mapa
+  // Dibujar la ruta en el mapa
   drawRoute(route: [number, number][]) {
-    // Verificar si la capa de ruta ya existe y eliminarla si es necesario
     if (this.map.getLayer('route')) {
       this.map.removeLayer('route');
       this.map.removeSource('route');
     }
 
-    // Añadir la fuente de la ruta
     this.map.addSource('route', {
       type: 'geojson',
       data: {
@@ -129,7 +146,6 @@ export class HomecPage implements OnInit {
       },
     });
 
-    // Añadir la capa de línea para mostrar la ruta
     this.map.addLayer({
       id: 'route',
       type: 'line',

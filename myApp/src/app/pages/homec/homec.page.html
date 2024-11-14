@@ -2,11 +2,28 @@
   <!-- Sección de mapa -->
   <div id="map" style="height: 100%;"></div>
 
-  <!-- Campo de búsqueda de dirección -->
-  <div class="search-bar">
-    <input type="text" placeholder="Ingresa una dirección" [(ngModel)]="searchQuery" />
-    <button (click)="searchAddress()">Buscar</button>
+<!-- Campo de búsqueda de dirección con predicciones -->
+<div class="search-bar">
+  <input
+    type="text"
+    placeholder="Buscar dirección"
+    [(ngModel)]="searchQuery"
+    (input)="onSearchChange()"
+    (blur)="hidePredictions()"
+    (focus)="onSearchChange()"
+  />
+  <div class="suggestions-container" *ngIf="predictions.length > 0">
+    <ul class="suggestions-list">
+      <li
+        *ngFor="let prediction of predictions"
+        (click)="selectPrediction(prediction)"
+      >
+        {{ prediction.place_name }}
+      </li>
+    </ul>
   </div>
+</div>
+
 
   <!-- Controles de selección de viaje pegados abajo -->
   <div class="trip-controls">
