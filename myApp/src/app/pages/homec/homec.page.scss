@@ -48,3 +48,30 @@
   width: 70px;
   text-align: center;
 }
+
+
+.search-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 2; /* Asegura que esté sobre el mapa */
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.search-bar button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #3887be;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
