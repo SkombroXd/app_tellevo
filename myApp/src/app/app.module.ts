@@ -16,7 +16,7 @@ import { TabscComponent } from './components/tabsc/tabsc.component';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent, TabsComponent, TabscComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule,AngularFireDatabaseModule,HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule,AngularFireDatabaseModule,HttpClientModule,],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

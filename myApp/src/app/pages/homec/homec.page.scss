@@ -21,34 +21,63 @@
 
 .control-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 10px; /* Ajusta el margen entre los controles */
+  gap: 10px; /* Añade espacio entre los elementos */
 }
 
 .control-item label {
   font-size: 1em;
   color: #333;
+  flex: 1;
 }
 
 .control-button {
-  background-color: #e0e0e0;
+  background-color: #555; /* Color más oscuro para el botón */
+  color: #fff; /* Texto blanco para contraste */
   border: none;
   padding: 8px 12px;
   font-size: 1.2em;
   border-radius: 5px;
   cursor: pointer;
+  width: 40px; /* Tamaño fijo para que los botones sean parejos */
+}
+
+.control-button:hover {
+  background-color: #333; /* Color aún más oscuro al pasar el ratón */
 }
 
 .control-input {
   border: none;
-  background-color: #f0f0f0;
+  background-color: #666; /* Color más oscuro para el input de hora */
+  color: #fff; /* Texto blanco para contraste */
   padding: 5px;
   border-radius: 5px;
-  width: 70px;
+  width: 100px; /* Aumenta el ancho del campo de hora */
   text-align: center;
 }
 
+.control-input::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Invertir color del icono del selector de tiempo para que sea visible en fondo oscuro */
+}
+
+.add-trip-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  background-color: #444; /* Color más oscuro para el botón */
+  color: #fff; /* Texto blanco */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-trip-button:hover {
+  background-color: #222; /* Aún más oscuro al pasar el ratón */
+}
 
 .search-bar {
   position: absolute;
@@ -94,4 +123,26 @@
 
 .suggestions-list li:hover {
   background-color: #f0f0f0;
+}
+
+.control-item label,
+.control-item span {
+  color: #000; /* Cambia el texto y números a negro */
+}
+
+.add-trip-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  background-color: #4CAF50; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-trip-button:hover {
+  background-color: #45a049; /* Color al pasar el ratón por encima */
 }
