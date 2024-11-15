@@ -11,10 +11,18 @@ export class ViajeService {
   constructor(private firestore: AngularFirestore) {}
 
   agregarViaje(viaje: Viaje) {
-    return this.firestore.collection<Viaje>(this.viajesCollection).add(viaje);
+    return this.firestore.collection<Viaje>(this.viajesCollection).doc(viaje.id).set(viaje);
+  }
+
+  generarId(): string {
+    return this.firestore.createId(); // Método de AngularFirestore para crear IDs únicos
   }
 
   obtenerViajes() {
-    return this.firestore.collection<Viaje>(this.viajesCollection).valueChanges();
+    return this.firestore.collection<Viaje>(this.viajesCollection).valueChanges({ idField: 'id' });
+  }
+
+  actualizarViaje(viaje: Viaje) {
+    return this.firestore.collection<Viaje>(this.viajesCollection).doc(viaje.id).update(viaje);
   }
 }

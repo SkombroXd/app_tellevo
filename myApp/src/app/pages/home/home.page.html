@@ -1,43 +1,22 @@
 <ion-content [fullscreen]="true">
-  <ion-content>
-    <!-- Encabezado con el título -->
-    <div class="header">
-      <h1>TE LLEVO!</h1>
-    </div>
-  
-    <!-- Subtítulo de viajes disponibles -->
-    <div class="subheader">
-      <h2>VIAJES DISPONIBLES</h2>
-    </div>
-  
-    <!-- Lista de viajes disponibles -->
-    <div class="trip-list">
-      <ion-card class="trip-card">
-        <ion-card-content>
-          <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
-          <p><strong>DESTINO:</strong> Concepción, Chile</p>
-          <p><strong>HOY, 2 PASAJEROS</strong> 17:30HRS</p>
-          <ion-button expand="block" fill="outline" color="primary" class="travel-button">VIAJAR</ion-button>
-        </ion-card-content>
-      </ion-card>
-  
-      <ion-card class="trip-card">
-        <ion-card-content>
-          <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
-          <p><strong>DESTINO:</strong> Concepción, Chile</p>
-          <p><strong>HOY, 2 PASAJEROS</strong> 17:18HRS</p>
-          <ion-button expand="block" fill="outline" color="primary" class="travel-button">VIAJAR</ion-button>
-        </ion-card-content>
-      </ion-card>
-  
-      <ion-card class="trip-card">
-        <ion-card-content>
-          <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
-          <p><strong>DESTINO:</strong> Concepción, Chile</p>
-          <p><strong>HOY, 2 PASAJEROS</strong> 17:37HRS</p>
-          <ion-button expand="block" fill="outline" color="primary" class="travel-button">VIAJAR</ion-button>
-        </ion-card-content>
-      </ion-card>
-    </div>
-  </ion-content>  
+  <div class="header">
+    <h1>TE LLEVO!</h1>
+  </div>
+
+  <div class="subheader">
+    <h2>VIAJES DISPONIBLES</h2>
+  </div>
+
+  <div class="trip-list">
+    <ion-card *ngFor="let viaje of viajesDisponibles" class="trip-card">
+      <ion-card-content>
+        <p><strong>PARTIDA:</strong> {{ viaje.ubicacionActual }}</p>
+        <p><strong>DESTINO:</strong> {{ viaje.destino }}</p>
+        <p><strong>{{ viaje.fecha }}, {{ viaje.cantidadp }} PASAJEROS</strong> {{ viaje.hora }}HRS</p>
+        <ion-button expand="block" fill="outline" color="primary" class="travel-button" (click)="reservarViaje(viaje)" [disabled]="viaje.cantidadp === 0">
+          VIAJAR
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
