@@ -3,6 +3,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { Geolocation } from '@capacitor/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { ViajeService } from '../../services/viaje.service';
 
 interface Viaje {
   nombrec: string;
@@ -36,7 +37,7 @@ export class HomecPage implements OnInit {
   horaViaje: string = '00:00'; // Hora del viaje
   viajes: Viaje[] = []; // Lista para almacenar viajes
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private viajeService: ViajeService) {}
 
   async ngOnInit() {
     const coordinates = await Geolocation.getCurrentPosition();
@@ -174,6 +175,7 @@ export class HomecPage implements OnInit {
       console.error('Error al obtener la ruta:', error);
     }
   }
+  
   drawRoute(route: [number, number][]) {
     // Verificar si ya existe una capa de ruta y eliminarla antes de agregar una nueva
     if (this.map.getLayer('route')) {
@@ -209,14 +211,13 @@ export class HomecPage implements OnInit {
       },
     });
   }
-  
 
   agregarViaje() {
     if (!this.destination) {
       alert('Por favor selecciona un destino en el mapa.');
       return;
     }
-
+  
     const nuevoViaje: Viaje = {
       nombrec: this.nombreConductor,
       ubicacionActual: this.ubicacionActual,
@@ -226,9 +227,16 @@ export class HomecPage implements OnInit {
       fecha: new Date().toLocaleDateString(),
       hora: this.horaViaje,
     };
-
-    this.viajes.push(nuevoViaje);
-    console.log('Viaje agregado:', nuevoViaje);
-    alert('Viaje agregado con éxito.');
+  
+    this.viajeService
+      .agregarViaje(nuevoViaje)
+      .then(() => {
+        alert('Viaje agregado con éxito.');
+        console.log('Viaje guardado en Firebase:', nuevoViaje);
+      })
+      .catch((error) => {
+        alert('Error al guardar el viaje.');
+        console.error('Error al guardar el viaje:', error);
+      });
   }
 }

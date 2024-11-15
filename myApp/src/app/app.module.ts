@@ -7,6 +7,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 import { TabsComponent } from './components/tabs/tabs.component';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -16,7 +18,7 @@ import { TabscComponent } from './components/tabsc/tabsc.component';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent, TabsComponent, TabscComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule,AngularFireDatabaseModule,HttpClientModule,],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule,AngularFireDatabaseModule,HttpClientModule,AngularFirestoreModule,],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

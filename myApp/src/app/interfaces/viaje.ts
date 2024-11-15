@@ -1,9 +1,9 @@
 export interface Viaje {
-    nombrec:string;
-    desde:string;
-    destino:string;
-    cantidadp:string;
-    costo:string;
-    fecha:string;
-    hora:string;
+    nombrec: string;
+    ubicacionActual: string;
+    destino: string;
+    cantidadp: number;
+    costo: number;
+    fecha: string;
+    hora: string;
 }
