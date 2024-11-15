@@ -1,32 +1,43 @@
 <ion-content [fullscreen]="true">
-  <!-- Sección del mapa (puedes integrar un mapa interactivo como Google Maps API) -->
-  <div class="map-section">
-    <!-- Aquí podrías colocar una imagen de un mapa o un componente de mapa interactivo -->
-    <img src="../../../assets/map.png" alt="Mapa" class="map-image">
-  </div>
-
-  <!-- Controles de selección de viaje pegados abajo -->
-  <div class="trip-controls">
-    <!-- Pasajeros -->
-    <div class="control-item">
-      <label for="passengers">Pasajeros:</label>
-      <button class="control-button">-</button>
-      <span id="passenger-count">1</span>
-      <button class="control-button">+</button>
-    </div>
-
-    <!-- Hora -->
-    <div class="control-item">
-      <label for="time">Hora:</label>
-      <input type="time" id="time" value="00:00" class="control-input">
-    </div>
-
-    <!-- Precio -->
-    <div class="control-item">
-      <label for="price">Precio:</label>
-      <button class="control-button">-</button>
-      <span id="price-amount">1000</span>
-      <button class="control-button">+</button>
-    </div>
-  </div>
+  <ion-content>
+      <!-- Encabezado con el título -->
+      <div class="header">
+        <h1>TE LLEVO!</h1>
+      </div>
+    
+      <!-- Subtítulo de viajes realizados -->
+      <div class="subheader">
+        <h2>VIAJES REALIZADOS</h2>
+      </div>
+    
+      <!-- Lista de viajes realizados -->
+      <div class="trip-list">
+        <ion-card class="trip-card">
+          <ion-card-content>
+            <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
+            <p><strong>DESTINO:</strong> Concepción, Chile</p>
+            <p><strong>CONDUCTOR:</strong> Juan Pérez</p>
+            <p><strong>FECHA:</strong> 25/09/2024</p>
+          </ion-card-content>
+        </ion-card>
+    
+        <ion-card class="trip-card">
+          <ion-card-content>
+            <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
+            <p><strong>DESTINO:</strong> Concepción, Chile</p>
+            <p><strong>CONDUCTOR:</strong> María López</p>
+            <p><strong>FECHA:</strong> 20/09/2024</p>
+          </ion-card-content>
+        </ion-card>
+    
+        <ion-card class="trip-card">
+          <ion-card-content>
+            <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
+            <p><strong>DESTINO:</strong> Concepción, Chile</p>
+            <p><strong>CONDUCTOR:</strong> Luis Martínez</p>
+            <p><strong>FECHA:</strong> 15/09/2024</p>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-content>      
 </ion-content>
