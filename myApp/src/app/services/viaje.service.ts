@@ -69,56 +69,33 @@ export class ViajeService {
     return !reservas?.empty;
   }
 
-  async reservarViaje(viaje: Viaje): Promise<boolean> {
+  async reservarViaje(viaje: Viaje) {
     const user = await this.authService.getCurrentUser();
-    if (!user) return false;
+    if (!user) throw new Error('Usuario no autenticado');
+
+    const batch = this.firestore.firestore.batch();
+    
+    // Crear notificación para el conductor
+    const notificacion: Omit<Notificacion, 'id'> = {
+      userId: viaje.userId, // ID del conductor
+      mensaje: `Nuevo pasajero ha reservado tu viaje a ${viaje.destino}`,
+      fecha: new Date(),
+      leida: false,
+      tipo: 'reserva',
+      viajeId: viaje.id
+    };
 
     try {
-      // Primero verificar si ya existe una reserva
-      const reservaExistente = await this.verificarReservaExistente(viaje.id, user.uid);
-      if (reservaExistente) {
-        throw new Error('Ya tienes una reserva para este viaje');
-      }
-
-      // Verificar si hay asientos disponibles
-      if (viaje.cantidadp <= 0) {
-        throw new Error('No hay asientos disponibles para este viaje');
-      }
-
-      // Obtener datos del pasajero
-      const pasajeroDoc = await this.firestore.collection('usuarios').doc(user.uid).get().toPromise();
-      const pasajeroData = pasajeroDoc?.data() as any;
-      const nombrePasajero = `${pasajeroData?.nombre} ${pasajeroData?.apellido}`;
-
       // Crear la reserva
-      const reservaId = this.firestore.createId();
-      const reserva = {
-        id: reservaId,
-        viajeId: viaje.id,
+      await this.firestore.collection(this.reservasCollection).add({
         userId: user.uid,
-        nombrePasajero: nombrePasajero,
+        viajeId: viaje.id,
         fecha: new Date()
-      };
+      });
 
-      await this.firestore.collection(this.reservasCollection).doc(reservaId).set(reserva);
-      
-      // Actualizar cantidad de asientos
-      viaje.cantidadp--;
-      await this.actualizarViaje(viaje);
-
-      // Crear notificación para el conductor
-      const notificacion: Notificacion = {
-        id: this.firestore.createId(),
-        userId: viaje.userId!, // ID del conductor
-        mensaje: `${nombrePasajero} ha reservado un asiento en tu viaje a ${viaje.destino}`,
-        fecha: new Date(),
-        leida: false,
-        tipo: 'reserva',
-        viajeId: viaje.id
-      };
-
+      // Crear la notificación
       await this.notificacionService.crearNotificacion(notificacion);
-      
+
       return true;
     } catch (error) {
       console.error('Error al reservar viaje:', error);

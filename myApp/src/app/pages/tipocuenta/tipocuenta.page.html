@@ -1,35 +1,35 @@
-<ion-content [fullscreen]="true">
-  <ion-content>
-    <!-- Saludo -->
-    <div class="header">
-      <h2>Hola!</h2>
-      <p>Selecciona el tipo de cuenta</p>
-    </div>
-  
-    <!-- Opciones de Usuario -->
-    <ion-grid>
-      <ion-row class="options-row">
-        <ion-col size="10"size-md="5">
-          <div [routerLink]="['/tabs/home']" class="option-card pasajero">
-            <div class="image-container">
-              <img src="../../../assets/autoescuela.png" alt="Soy Pasajero">
-            </div>
-              <h3>Soy Pasajero</h3>
-            <p>Quiero tener un viaje</p>
-          </div>
-        </ion-col>
-        
-        <ion-col size="10" size-md="5" >
-          <div [routerLink]="['/datosvehiculo']" class="option-card conductor">
-            <div class="image-container">
-              <img src="../../../assets/volante.png" alt="Soy Conductor">
-            </div>
-              <h3>Soy Conductor</h3>
-            <p>Quiero publicar un viaje</p>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
-  
-</ion-content>
+<ion-content [fullscreen]="true">
+  <ion-content>
+    <!-- Saludo -->
+    <div class="header">
+      <h2>Hola!</h2>
+      <p>Selecciona el tipo de cuenta</p>
+    </div>
+  
+    <!-- Opciones de Usuario -->
+    <ion-grid>
+      <ion-row class="options-row">
+        <ion-col size="10" size-md="5">
+          <div (click)="seleccionarTipoCuenta(false)" class="option-card pasajero">
+            <div class="image-container">
+              <img src="../../../assets/autoescuela.png" alt="Soy Pasajero">
+            </div>
+            <h3>Soy Pasajero</h3>
+            <p>Quiero tener un viaje</p>
+          </div>
+        </ion-col>
+        
+        <ion-col size="10" size-md="5">
+          <div (click)="seleccionarTipoCuenta(true)" class="option-card conductor">
+            <div class="image-container">
+              <img src="../../../assets/volante.png" alt="Soy Conductor">
+            </div>
+            <h3>Soy Conductor</h3>
+            <p>Quiero publicar un viaje</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-content>
+

@@ -12,12 +12,21 @@ export class NotificacionService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  async crearNotificacion(notificacion: Notificacion) {
+  async crearNotificacion(notificacion: Omit<Notificacion, 'id'>) {
     try {
       const id = this.firestore.createId();
+      const nuevaNotificacion = {
+        ...notificacion,
+        id,
+        fecha: new Date(),
+        leida: false
+      };
+      
       await this.firestore.collection(this.notificacionesCollection)
         .doc(id)
-        .set({ ...notificacion, id });
+        .set(nuevaNotificacion);
+        
+      return nuevaNotificacion;
     } catch (error) {
       console.error('Error al crear notificación:', error);
       throw error;

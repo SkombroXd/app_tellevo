@@ -15,61 +15,71 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
     canActivate: [NoAuthGuard]
   },
   {
     path: 'register',
-    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule),
+    loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule),
     canActivate: [NoAuthGuard]
   },
   {
     path: 'tipocuenta',
-    loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then( m => m.TipocuentaPageModule),
+    loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then(m => m.TipocuentaPageModule),
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'datosvehiculo',
-    loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then( m => m.DatosvehiculoPageModule),
-    canActivate: [AuthGuard, VehiculoGuard]
   },
   {
     path: 'tabs',
     component: TabsComponent,
-    canActivate: [AuthGuard],
-    children:[
+    children: [
+      {
+        path: 'home',
+        loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+      },
       {
         path: 'perfilpasajero',
-        loadChildren: () => import('./pages/perfilpasajero/perfilpasajero.module').then( m => m.PerfilpasajeroPageModule)
+        loadChildren: () => import('./pages/perfilpasajero/perfilpasajero.module').then(m => m.PerfilpasajeroPageModule)
       },
       {
         path: 'viajespasajero',
-        loadChildren: () => import('./pages/viajespasajero/viajespasajero.module').then( m => m.ViajespasajeroPageModule)
+        loadChildren: () => import('./pages/viajespasajero/viajespasajero.module').then(m => m.ViajespasajeroPageModule)
       },
       {
-        path: 'home',
-        loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
       }
-    ]
+    ],
+    canActivate: [AuthGuard]
   },
   {
     path: 'tabsc',
     component: TabscComponent,
-    canActivate: [AuthGuard, ConductorGuard],
-    children:[
+    children: [
+      {
+        path: 'homec',
+        loadChildren: () => import('./pages/homec/homec.module').then(m => m.HomecPageModule)
+      },
       {
         path: 'perfilconductor',
-        loadChildren: () => import('./pages/perfilconductor/perfilconductor.module').then( m => m.PerfilconductorPageModule)
+        loadChildren: () => import('./pages/perfilconductor/perfilconductor.module').then(m => m.PerfilconductorPageModule)
       },
       {
         path: 'viajesconductor',
-        loadChildren: () => import('./pages/viajesconductor/viajesconductor.module').then( m => m.ViajesconductorPageModule)
+        loadChildren: () => import('./pages/viajesconductor/viajesconductor.module').then(m => m.ViajesconductorPageModule)
       },
       {
-        path: 'homec',
-        loadChildren: () => import('./pages/homec/homec.module').then( m => m.HomecPageModule)
-      },
-    ]
+        path: '',
+        redirectTo: 'homec',
+        pathMatch: 'full'
+      }
+    ],
+    canActivate: [AuthGuard, ConductorGuard]
+  },
+  {
+    path: 'datosvehiculo',
+    loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then(m => m.DatosvehiculoPageModule),
+    canActivate: [AuthGuard, VehiculoGuard]
   },
   {
     path: '**',
