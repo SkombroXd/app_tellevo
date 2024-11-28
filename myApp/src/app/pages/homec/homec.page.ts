@@ -4,11 +4,13 @@ import { Geolocation } from '@capacitor/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ViajeService } from '../../services/viaje.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { NotificacionService } from '../../services/notificacion.service';
 import { AuthService } from '../../services/auth.service';
 import { Notificacion } from '../../interfaces/notificacion';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NotificationsModalComponent } from '../../components/notifications-modal/notifications-modal.component';
 
 interface Viaje {
   id: string;
@@ -48,9 +50,11 @@ export class HomecPage implements OnInit {
     private http: HttpClient, 
     private viajeService: ViajeService,
     private alertController: AlertController,
+    private modalController: ModalController,
     private notificacionService: NotificacionService,
     private authService: AuthService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private sanitizer: DomSanitizer
   ) {}
 
   async ngOnInit() {
@@ -301,7 +305,11 @@ export class HomecPage implements OnInit {
     if (user) {
       this.notificacionService.obtenerNotificaciones(user.uid).subscribe(
         notificaciones => {
+          console.log('Notificaciones cargadas:', notificaciones);
           this.notificacionesNoLeidas = notificaciones.filter(n => !n.leida).length;
+        },
+        error => {
+          console.error('Error al cargar notificaciones:', error);
         }
       );
     }
@@ -311,32 +319,41 @@ export class HomecPage implements OnInit {
     const user = await this.authService.getCurrentUser();
     if (!user) return;
 
-    this.notificacionService.obtenerNotificaciones(user.uid).subscribe(
-      async notificaciones => {
-        if (notificaciones.length === 0) {
-          this.mostrarAlerta('No hay notificaciones', 'No tienes notificaciones nuevas');
-          return;
-        }
+    try {
+      // Obtener las notificaciones primero
+      const notificaciones = await firstValueFrom(
+        this.notificacionService.obtenerNotificaciones(user.uid)
+      );
 
-        const alert = await this.alertController.create({
-          header: 'Notificaciones',
-          message: this.formatearNotificaciones(notificaciones),
-          buttons: ['OK']
-        });
-
-        await alert.present();
-
-        // Marcar notificaciones como leídas
-        notificaciones
-          .filter(n => !n.leida)
-          .forEach(n => this.notificacionService.marcarComoLeida(n.id));
+      if (notificaciones.length === 0) {
+        await this.mostrarAlerta('Notificaciones', 'No tienes notificaciones nuevas');
+        return;
       }
-    );
-  }
 
-  private formatearNotificaciones(notificaciones: Notificacion[]): string {
-    return notificaciones
-      .map(n => `${new Date(n.fecha).toLocaleString()}: ${n.mensaje}`)
-      .join('<br><br>');
+      // Crear y mostrar el modal
+      const modal = await this.modalController.create({
+        component: NotificationsModalComponent,
+        componentProps: {
+          notificaciones: [...notificaciones] // Crear una copia del array
+        },
+        cssClass: 'notifications-modal'
+      });
+
+      await modal.present();
+
+      // Manejar el cierre del modal
+      const { data } = await modal.onDidDismiss();
+      
+      // Marcar notificaciones como leídas
+      for (const notificacion of notificaciones) {
+        if (!notificacion.leida) {
+          await this.notificacionService.marcarComoLeida(notificacion.id);
+        }
+      }
+
+    } catch (error) {
+      console.error('Error al mostrar notificaciones:', error);
+      await this.mostrarAlerta('Error', 'No se pudieron cargar las notificaciones');
+    }
   }
 }  

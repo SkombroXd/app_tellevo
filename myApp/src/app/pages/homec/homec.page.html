@@ -14,6 +14,10 @@
 
       type="text"
 
+      id="search-input"
+
+      name="search-input"
+
       placeholder="Buscar dirección"
 
       [(ngModel)]="searchQuery"
@@ -24,17 +28,21 @@
 
       (focus)="onSearchChange()"
 
+      aria-label="Buscar dirección"
+
     />
 
     <div class="suggestions-container" *ngIf="predictions.length > 0">
 
-      <ul class="suggestions-list">
+      <ul class="suggestions-list" role="listbox">
 
         <li
 
           *ngFor="let prediction of predictions"
 
           (click)="selectPrediction(prediction)"
+
+          role="option"
 
         >
 
@@ -58,13 +66,45 @@
 
     <div class="control-item">
 
-      <label for="passengers">Pasajeros:</label>
+      <label for="passengers-input">Pasajeros:</label>
 
-      <button class="control-button" (click)="decrementarPasajeros()">-</button>
+      <button 
 
-      <span id="passenger-count">{{ cantidadPasajeros }}</span>
+        class="control-button" 
 
-      <button class="control-button" (click)="incrementarPasajeros()">+</button>
+        (click)="decrementarPasajeros()"
+
+        aria-label="Disminuir pasajeros"
+
+      >-</button>
+
+      <input
+
+        type="number"
+
+        id="passengers-input"
+
+        name="passengers-input"
+
+        [(ngModel)]="cantidadPasajeros"
+
+        readonly
+
+        class="control-input"
+
+        aria-label="Cantidad de pasajeros"
+
+      />
+
+      <button 
+
+        class="control-button" 
+
+        (click)="incrementarPasajeros()"
+
+        aria-label="Aumentar pasajeros"
+
+      >+</button>
 
     </div>
 
@@ -74,9 +114,23 @@
 
     <div class="control-item">
 
-      <label for="time">Hora:</label>
+      <label for="time-input">Hora:</label>
 
-      <input type="time" id="time" [(ngModel)]="horaViaje" class="control-input" />
+      <input 
+
+        type="time" 
+
+        id="time-input"
+
+        name="time-input"
+
+        [(ngModel)]="horaViaje" 
+
+        class="control-input"
+
+        aria-label="Seleccionar hora del viaje"
+
+      />
 
     </div>
 
@@ -86,13 +140,45 @@
 
     <div class="control-item">
 
-      <label for="price">Precio:</label>
+      <label for="price-input">Precio:</label>
 
-      <button class="control-button" (click)="costoViaje = costoViaje > 0 ? costoViaje - 100 : 0">-</button>
+      <button 
 
-      <span id="price-amount">{{ costoViaje }}</span>
+        class="control-button" 
 
-      <button class="control-button" (click)="costoViaje = costoViaje + 100">+</button>
+        (click)="costoViaje = costoViaje > 0 ? costoViaje - 100 : 0"
+
+        aria-label="Disminuir precio"
+
+      >-</button>
+
+      <input
+
+        type="number"
+
+        id="price-input"
+
+        name="price-input"
+
+        [(ngModel)]="costoViaje"
+
+        readonly
+
+        class="control-input"
+
+        aria-label="Precio del viaje"
+
+      />
+
+      <button 
+
+        class="control-button" 
+
+        (click)="costoViaje = costoViaje + 100"
+
+        aria-label="Aumentar precio"
+
+      >+</button>
 
     </div>
 
@@ -100,15 +186,31 @@
 
     <!-- Botón para agregar viaje -->
 
-    <button class="add-trip-button" (click)="agregarViaje()">Agregar viaje</button>
+    <button 
+
+      class="add-trip-button" 
+
+      (click)="agregarViaje()"
+
+      aria-label="Agregar viaje"
+
+    >Agregar viaje</button>
 
   </div>
 
   <!-- Botón de notificaciones -->
   <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="mostrarNotificaciones()" size="small">
+    <ion-fab-button 
+      (click)="mostrarNotificaciones()" 
+      size="small"
+      aria-label="Ver notificaciones"
+    >
       <ion-icon name="notifications"></ion-icon>
-      <ion-badge *ngIf="notificacionesNoLeidas > 0" color="danger">
+      <ion-badge 
+        *ngIf="notificacionesNoLeidas > 0" 
+        color="danger"
+        aria-label="Notificaciones no leídas"
+      >
         {{ notificacionesNoLeidas }}
       </ion-badge>
     </ion-fab-button>

@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { of } from 'rxjs';
 import { NotificacionService } from './notificacion.service';
 import { Notificacion } from '../interfaces/notificacion';
+import firebase from 'firebase/compat/app';
 
 interface Reserva {
   id: string;
@@ -73,29 +74,36 @@ export class ViajeService {
     const user = await this.authService.getCurrentUser();
     if (!user) throw new Error('Usuario no autenticado');
 
-    const batch = this.firestore.firestore.batch();
-    
-    // Crear notificación para el conductor
-    const notificacion: Omit<Notificacion, 'id'> = {
-      userId: viaje.userId, // ID del conductor
-      mensaje: `Nuevo pasajero ha reservado tu viaje a ${viaje.destino}`,
-      fecha: new Date(),
-      leida: false,
-      tipo: 'reserva',
-      viajeId: viaje.id
-    };
-
     try {
-      // Crear la reserva
-      await this.firestore.collection(this.reservasCollection).add({
+      const pasajeroDoc = await this.firestore.collection('usuarios').doc(user.uid).get().toPromise();
+      const pasajeroData = pasajeroDoc?.data() as any;
+      const nombrePasajero = `${pasajeroData.nombre} ${pasajeroData.apellido}`;
+
+      await this.firestore.collection('reservas').add({
         userId: user.uid,
         viajeId: viaje.id,
-        fecha: new Date()
+        fecha: firebase.firestore.Timestamp.now()
       });
 
-      // Crear la notificación
-      await this.notificacionService.crearNotificacion(notificacion);
+      const timestamp = firebase.firestore.Timestamp.now();
+      const notificacion: Omit<Notificacion, 'id'> = {
+        userId: viaje.userId!,
+        mensaje: `${nombrePasajero} ha reservado un asiento para el viaje a ${viaje.destino}`,
+        fecha: timestamp,
+        fechaNotificacion: timestamp,
+        horaSalida: viaje.hora,
+        leida: false,
+        nombrePasajero: nombrePasajero,
+        destino: viaje.destino,
+        viajeId: viaje.id
+      };
 
+      if (!viaje.hora) {
+        console.warn('Advertencia: El viaje no tiene hora especificada');
+      }
+
+      console.log('Creando notificación:', notificacion);
+      await this.notificacionService.crearNotificacion(notificacion);
       return true;
     } catch (error) {
       console.error('Error al reservar viaje:', error);

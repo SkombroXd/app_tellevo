@@ -1,9 +1,14 @@
+import firebase from 'firebase/compat/app';
+
 export interface Notificacion {
   id: string;
   userId: string;
   mensaje: string;
-  fecha: Date;
+  fecha?: firebase.firestore.Timestamp;
+  fechaNotificacion: firebase.firestore.Timestamp;
+  horaSalida?: string;
   leida: boolean;
-  tipo: 'reserva' | 'cancelacion';
+  nombrePasajero: string;
+  destino: string;
   viajeId: string;
 } 
