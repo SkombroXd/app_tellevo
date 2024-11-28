@@ -20,7 +20,7 @@ export class NoAuthGuard implements CanActivate {
         if (!user) {
           return true;
         } else {
-          this.router.navigate(['/tipocuenta']);
+          this.router.navigate(['/tabs/home']);
           return false;
         }
       })
