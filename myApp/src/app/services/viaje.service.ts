@@ -4,6 +4,8 @@ import { Viaje } from '../interfaces/viaje';
 import { Observable, map, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { of } from 'rxjs';
+import { NotificacionService } from './notificacion.service';
+import { Notificacion } from '../interfaces/notificacion';
 
 interface Reserva {
   id: string;
@@ -21,7 +23,8 @@ export class ViajeService {
 
   constructor(
     private firestore: AngularFirestore,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificacionService: NotificacionService
   ) {}
 
   agregarViaje(viaje: Viaje) {
@@ -70,25 +73,57 @@ export class ViajeService {
     const user = await this.authService.getCurrentUser();
     if (!user) return false;
 
-    const reservaExistente = await this.verificarReservaExistente(viaje.id, user.uid);
-    if (reservaExistente) {
-      throw new Error('Ya tienes una reserva para este viaje');
+    try {
+      // Primero verificar si ya existe una reserva
+      const reservaExistente = await this.verificarReservaExistente(viaje.id, user.uid);
+      if (reservaExistente) {
+        throw new Error('Ya tienes una reserva para este viaje');
+      }
+
+      // Verificar si hay asientos disponibles
+      if (viaje.cantidadp <= 0) {
+        throw new Error('No hay asientos disponibles para este viaje');
+      }
+
+      // Obtener datos del pasajero
+      const pasajeroDoc = await this.firestore.collection('usuarios').doc(user.uid).get().toPromise();
+      const pasajeroData = pasajeroDoc?.data() as any;
+      const nombrePasajero = `${pasajeroData?.nombre} ${pasajeroData?.apellido}`;
+
+      // Crear la reserva
+      const reservaId = this.firestore.createId();
+      const reserva = {
+        id: reservaId,
+        viajeId: viaje.id,
+        userId: user.uid,
+        nombrePasajero: nombrePasajero,
+        fecha: new Date()
+      };
+
+      await this.firestore.collection(this.reservasCollection).doc(reservaId).set(reserva);
+      
+      // Actualizar cantidad de asientos
+      viaje.cantidadp--;
+      await this.actualizarViaje(viaje);
+
+      // Crear notificación para el conductor
+      const notificacion: Notificacion = {
+        id: this.firestore.createId(),
+        userId: viaje.userId!, // ID del conductor
+        mensaje: `${nombrePasajero} ha reservado un asiento en tu viaje a ${viaje.destino}`,
+        fecha: new Date(),
+        leida: false,
+        tipo: 'reserva',
+        viajeId: viaje.id
+      };
+
+      await this.notificacionService.crearNotificacion(notificacion);
+      
+      return true;
+    } catch (error) {
+      console.error('Error al reservar viaje:', error);
+      throw error;
     }
-
-    const reservaId = this.firestore.createId();
-    const reserva = {
-      id: reservaId,
-      viajeId: viaje.id,
-      userId: user.uid,
-      fecha: new Date()
-    };
-
-    await this.firestore.collection(this.reservasCollection).doc(reservaId).set(reserva);
-    
-    viaje.cantidadp--;
-    await this.actualizarViaje(viaje);
-    
-    return true;
   }
 
   async verificarViajeExistente(userId: string, fecha: string, hora: string): Promise<boolean> {

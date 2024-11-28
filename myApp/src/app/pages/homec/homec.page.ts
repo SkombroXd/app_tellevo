@@ -5,6 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ViajeService } from '../../services/viaje.service';
 import { AlertController } from '@ionic/angular';
+import { NotificacionService } from '../../services/notificacion.service';
+import { AuthService } from '../../services/auth.service';
+import { Notificacion } from '../../interfaces/notificacion';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 interface Viaje {
   id: string;
@@ -38,11 +42,15 @@ export class HomecPage implements OnInit {
   costoViaje: number = 1000;
   horaViaje: string = '00:00';
   viajes: Viaje[] = [];
+  notificacionesNoLeidas = 0;
 
   constructor(
     private http: HttpClient, 
     private viajeService: ViajeService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private notificacionService: NotificacionService,
+    private authService: AuthService,
+    private firestore: AngularFirestore
   ) {}
 
   async ngOnInit() {
@@ -68,6 +76,20 @@ export class HomecPage implements OnInit {
       const lngLat = event.lngLat;
       this.setDestination([lngLat.lng, lngLat.lat]);
     });
+
+    await this.cargarNotificaciones();
+    await this.cargarDatosConductor();
+  }
+
+  private async cargarDatosConductor() {
+    const user = await this.authService.getCurrentUser();
+    if (user) {
+      const userDoc = await this.firestore.collection('usuarios').doc(user.uid).get().toPromise();
+      const userData = userDoc?.data() as any;
+      if (userData) {
+        this.nombreConductor = `${userData.nombre} ${userData.apellido}`;
+      }
+    }
   }
 
   async obtenerDireccionOrigen() {
@@ -209,6 +231,12 @@ export class HomecPage implements OnInit {
       return;
     }
 
+    const user = await this.authService.getCurrentUser();
+    if (!user) {
+      await this.mostrarAlerta('Error', 'No se pudo obtener la información del usuario');
+      return;
+    }
+
     const fechaActual = new Date().toISOString().split('T')[0];
     
     const nuevoViaje = {
@@ -220,7 +248,7 @@ export class HomecPage implements OnInit {
       costo: this.costoViaje,
       fecha: fechaActual,
       hora: this.horaViaje,
-      userId: ''
+      userId: user.uid
     };
 
     try {
@@ -266,5 +294,49 @@ export class HomecPage implements OnInit {
     if (this.cantidadPasajeros < this.maxPasajeros) {
       this.cantidadPasajeros++;
     }
+  }
+
+  async cargarNotificaciones() {
+    const user = await this.authService.getCurrentUser();
+    if (user) {
+      this.notificacionService.obtenerNotificaciones(user.uid).subscribe(
+        notificaciones => {
+          this.notificacionesNoLeidas = notificaciones.filter(n => !n.leida).length;
+        }
+      );
+    }
+  }
+
+  async mostrarNotificaciones() {
+    const user = await this.authService.getCurrentUser();
+    if (!user) return;
+
+    this.notificacionService.obtenerNotificaciones(user.uid).subscribe(
+      async notificaciones => {
+        if (notificaciones.length === 0) {
+          this.mostrarAlerta('No hay notificaciones', 'No tienes notificaciones nuevas');
+          return;
+        }
+
+        const alert = await this.alertController.create({
+          header: 'Notificaciones',
+          message: this.formatearNotificaciones(notificaciones),
+          buttons: ['OK']
+        });
+
+        await alert.present();
+
+        // Marcar notificaciones como leídas
+        notificaciones
+          .filter(n => !n.leida)
+          .forEach(n => this.notificacionService.marcarComoLeida(n.id));
+      }
+    );
+  }
+
+  private formatearNotificaciones(notificaciones: Notificacion[]): string {
+    return notificaciones
+      .map(n => `${new Date(n.fecha).toLocaleString()}: ${n.mensaje}`)
+      .join('<br><br>');
   }
 }  

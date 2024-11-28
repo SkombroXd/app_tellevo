@@ -1,22 +1,35 @@
 <ion-content [fullscreen]="true">
   <div class="header">
-    <h1>TE LLEVO!</h1>
-  </div>
-
-  <div class="subheader">
-    <h2>VIAJES DISPONIBLES</h2>
+    <h1>VIAJES DISPONIBLES</h1>
   </div>
 
   <div class="trip-list">
     <ion-card *ngFor="let viaje of viajesDisponibles" class="trip-card">
       <ion-card-content>
-        <p><strong>PARTIDA:</strong> {{ viaje.ubicacionActual }}</p>
-        <p><strong>DESTINO:</strong> {{ viaje.destino }}</p>
-        <p><strong>{{ viaje.fecha }}, {{ viaje.cantidadp }} PASAJEROS</strong> {{ viaje.hora }}HRS</p>
-        <ion-button expand="block" fill="outline" color="primary" class="travel-button" (click)="reservarViaje(viaje)" [disabled]="viaje.cantidadp === 0">
-          VIAJAR
+        <div class="trip-info">
+          <p><strong>Conductor:</strong> {{ viaje.nombrec }}</p>
+          <p><strong>Origen:</strong> {{ viaje.ubicacionActual }}</p>
+          <p><strong>Destino:</strong> {{ viaje.destino }}</p>
+          <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
+          <p><strong>Hora:</strong> {{ viaje.hora }}</p>
+          <p><strong>Asientos disponibles:</strong> {{ viaje.cantidadp }}</p>
+          <p><strong>Costo:</strong> ${{ viaje.costo }}</p>
+        </div>
+        
+        <ion-button 
+          expand="block" 
+          fill="outline" 
+          color="primary" 
+          class="travel-button" 
+          (click)="reservarViaje(viaje)" 
+          [disabled]="viaje.cantidadp === 0 || viaje.userId === userId">
+          {{ viaje.userId === userId ? 'Tu viaje' : 'VIAJAR' }}
         </ion-button>
       </ion-card-content>
     </ion-card>
+
+    <div *ngIf="viajesDisponibles.length === 0" class="no-trips">
+      <p>No hay viajes disponibles</p>
+    </div>
   </div>
 </ion-content>

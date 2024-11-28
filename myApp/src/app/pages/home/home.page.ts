@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViajeService } from '../../services/viaje.service';
 import { Viaje } from '../../interfaces/viaje';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,28 +12,41 @@ import { AlertController } from '@ionic/angular';
 })
 export class HomePage implements OnInit {
   viajesDisponibles: Viaje[] = [];
+  userId: string | undefined;
 
   constructor(
     private viajeService: ViajeService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private authService: AuthService
   ) {}
 
-  ngOnInit() {
-    this.obtenerViajesDisponibles();
+  async ngOnInit() {
+    const user = await this.authService.getCurrentUser();
+    if (user) {
+      this.userId = user.uid;
+      this.obtenerViajesDisponibles();
+    }
   }
 
   obtenerViajesDisponibles() {
     this.viajeService.obtenerViajes().subscribe((viajes) => {
-      this.viajesDisponibles = viajes;
+      // Filtrar los viajes propios si el usuario está autenticado
+      this.viajesDisponibles = viajes.filter(viaje => viaje.userId !== this.userId);
     });
   }
 
   async reservarViaje(viaje: Viaje) {
     try {
+      // Verificar que no sea el propio viaje del conductor
+      if (viaje.userId === this.userId) {
+        await this.mostrarAlerta('Error', 'No puedes reservar tus propios viajes');
+        return;
+      }
+
       await this.viajeService.reservarViaje(viaje);
-      this.mostrarAlerta('Éxito', 'Viaje reservado correctamente');
+      await this.mostrarAlerta('Éxito', 'Viaje reservado correctamente');
     } catch (error) {
-      this.mostrarAlerta('Error', error instanceof Error ? error.message : 'No se pudo reservar el viaje');
+      await this.mostrarAlerta('Error', error instanceof Error ? error.message : 'No se pudo reservar el viaje');
     }
   }
 

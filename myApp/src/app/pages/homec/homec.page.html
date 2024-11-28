@@ -1,55 +1,119 @@
-<ion-content [fullscreen]="true">
-  <!-- Sección de mapa -->
-  <div id="map" style="height: 100%;"></div>
-
-  <!-- Campo de búsqueda de dirección con predicciones -->
-  <div class="search-bar">
-    <input
-      type="text"
-      placeholder="Buscar dirección"
-      [(ngModel)]="searchQuery"
-      (input)="onSearchChange()"
-      (blur)="hidePredictions()"
-      (focus)="onSearchChange()"
-    />
-    <div class="suggestions-container" *ngIf="predictions.length > 0">
-      <ul class="suggestions-list">
-        <li
-          *ngFor="let prediction of predictions"
-          (click)="selectPrediction(prediction)"
-        >
-          {{ prediction.place_name }}
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Controles de selección de viaje pegados abajo -->
-  <div class="trip-controls">
-    <!-- Pasajeros -->
-    <div class="control-item">
-      <label for="passengers">Pasajeros:</label>
-      <button class="control-button" (click)="decrementarPasajeros()">-</button>
-      <span id="passenger-count">{{ cantidadPasajeros }}</span>
-      <button class="control-button" (click)="incrementarPasajeros()">+</button>
-    </div>
-
-    <!-- Hora -->
-    <div class="control-item">
-      <label for="time">Hora:</label>
-      <input type="time" id="time" [(ngModel)]="horaViaje" class="control-input" />
-    </div>
-
-    <!-- Precio -->
-    <div class="control-item">
-      <label for="price">Precio:</label>
-      <button class="control-button" (click)="costoViaje = costoViaje > 0 ? costoViaje - 100 : 0">-</button>
-      <span id="price-amount">{{ costoViaje }}</span>
-      <button class="control-button" (click)="costoViaje = costoViaje + 100">+</button>
-    </div>
-
-    <!-- Botón para agregar viaje -->
-    <button class="add-trip-button" (click)="agregarViaje()">Agregar viaje</button>
-  </div>
-</ion-content>
-
+<ion-content [fullscreen]="true">
+
+  <!-- Sección de mapa -->
+
+  <div id="map" style="height: 100%;"></div>
+
+
+
+  <!-- Campo de búsqueda de dirección con predicciones -->
+
+  <div class="search-bar">
+
+    <input
+
+      type="text"
+
+      placeholder="Buscar dirección"
+
+      [(ngModel)]="searchQuery"
+
+      (input)="onSearchChange()"
+
+      (blur)="hidePredictions()"
+
+      (focus)="onSearchChange()"
+
+    />
+
+    <div class="suggestions-container" *ngIf="predictions.length > 0">
+
+      <ul class="suggestions-list">
+
+        <li
+
+          *ngFor="let prediction of predictions"
+
+          (click)="selectPrediction(prediction)"
+
+        >
+
+          {{ prediction.place_name }}
+
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Controles de selección de viaje pegados abajo -->
+
+  <div class="trip-controls">
+
+    <!-- Pasajeros -->
+
+    <div class="control-item">
+
+      <label for="passengers">Pasajeros:</label>
+
+      <button class="control-button" (click)="decrementarPasajeros()">-</button>
+
+      <span id="passenger-count">{{ cantidadPasajeros }}</span>
+
+      <button class="control-button" (click)="incrementarPasajeros()">+</button>
+
+    </div>
+
+
+
+    <!-- Hora -->
+
+    <div class="control-item">
+
+      <label for="time">Hora:</label>
+
+      <input type="time" id="time" [(ngModel)]="horaViaje" class="control-input" />
+
+    </div>
+
+
+
+    <!-- Precio -->
+
+    <div class="control-item">
+
+      <label for="price">Precio:</label>
+
+      <button class="control-button" (click)="costoViaje = costoViaje > 0 ? costoViaje - 100 : 0">-</button>
+
+      <span id="price-amount">{{ costoViaje }}</span>
+
+      <button class="control-button" (click)="costoViaje = costoViaje + 100">+</button>
+
+    </div>
+
+
+
+    <!-- Botón para agregar viaje -->
+
+    <button class="add-trip-button" (click)="agregarViaje()">Agregar viaje</button>
+
+  </div>
+
+  <!-- Botón de notificaciones -->
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="mostrarNotificaciones()" size="small">
+      <ion-icon name="notifications"></ion-icon>
+      <ion-badge *ngIf="notificacionesNoLeidas > 0" color="danger">
+        {{ notificacionesNoLeidas }}
+      </ion-badge>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+

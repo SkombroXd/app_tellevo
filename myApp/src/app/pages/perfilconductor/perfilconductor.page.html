@@ -36,7 +36,7 @@
     <!-- Enlaces para cerrar sesión y eliminar cuenta -->
     <div class="footer-links">
       <a [routerLink]="['/tipocuenta']" class="delete-account">Cambiar tipo de cuenta</a>
-      <a [routerLink]="['/login']">Cerrar sesión</a>
+      <a (click)="logout()">Cerrar sesión</a>
     </div>
   </ion-content>  
 </ion-content>

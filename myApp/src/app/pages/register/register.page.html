@@ -1,424 +1,132 @@
-<ion-content [fullscreen]="true">
-
-
-
-
-
-
-
-  <ion-content>
-
-
-
-
-
-
-
-    <!-- Título superior con fondo azul -->
-
-
-
-
-
-
-
-    <div class="header">
-
-
-
-
-
-
-
-      <h1>CREA TU CUENTA!</h1>
-
-
-
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-    <!-- Formulario de creación de cuenta -->
-
-
-
-
-
-
-
-     <form (ngSubmit)="registrar()">
-
-
-
-
-
-
-
-    <div class="signup-form">
-
-
-
-
-
-
-
-      <ion-list>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-        <!-- Campo Email -->
-
-
-
-
-
-
-
-        <ion-item class="input-field">
-
-
-
-
-
-
-
-          <ion-input [(ngModel)]="usr.email" name="email" type="email" placeholder="Email"></ion-input>
-
-
-
-
-
-
-
-        </ion-item>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-        <!-- Campo Nombre -->
-
-
-
-
-
-
-
-        <ion-item class="input-field">
-
-
-
-
-
-
-
-          <ion-input [(ngModel)]="usr.nombre" name="nombre" type="text" placeholder="Nombre"></ion-input>
-
-
-
-
-
-
-
-        </ion-item>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-        <!-- Campo Apellido -->
-
-
-
-
-
-
-
-        <ion-item class="input-field">
-
-
-
-
-
-
-
-          <ion-input [(ngModel)]="usr.apellido" name="apellido" type="text" placeholder="Apellido"></ion-input>
-
-
-
-
-
-
-
-        </ion-item>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-        <!-- Campo Contraseña -->
-
-
-
-
-
-
-
-        <ion-item class="input-field">
-
-
-
-
-
-
-
-          <ion-input [(ngModel)]="usr.password" name="password" type="password" placeholder="Contraseña"></ion-input>
-
-
-
-
-
-
-
-          <ion-icon name="eye-off-outline" slot="end"></ion-icon>
-
-
-
-
-
-
-
-        </ion-item>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-        <!-- Campo Repite Contraseña -->
-
-
-
-
-
-
-
-        <ion-item class="input-field">
-
-
-
-
-
-
-
-          <ion-input type="password" placeholder="Repite Contraseña"></ion-input>
-
-
-
-
-
-
-
-          <ion-icon name="eye-off-outline" slot="end"></ion-icon>
-
-
-
-
-
-
-
-        </ion-item>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-        <!-- Casilla de verificación para aceptar términos -->
-
-
-
-
-
-
-
-        <ion-item lines="none" class="terms-checkbox">
-
-
-
-
-
-
-
-          <ion-checkbox slot="start"></ion-checkbox>
-
-
-
-
-
-
-
-          <ion-label>Acepto los <a href="#">términos y condiciones</a></ion-label>
-
-
-
-
-
-
-
-        </ion-item>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-      </ion-list>
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-      <!-- Botón de crear cuenta -->
-
-
-
-
-
-
-
-      <ion-button type="submit" expand="block" class="signup-button">Crear Cuenta</ion-button>
-
-
-
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-  </form>
-
-
-
-
-
-
-
-  </ion-content>
-
-
-
-
-
-
-
-</ion-content>
-
-
-
-
-
-
-
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <h1>REGISTRO</h1>
+  </div>
+
+  <div class="signup-form">
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+      <ion-list>
+        <!-- Campo Nombre -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="usuario.nombre" 
+            name="nombre"
+            type="text" 
+            required
+            minlength="2"
+            #nombre="ngModel"
+            placeholder="Nombre">
+          </ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+          <p *ngIf="nombre.errors?.['required']">El nombre es requerido</p>
+          <p *ngIf="nombre.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</p>
+        </div>
+
+        <!-- Campo Apellido -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="usuario.apellido" 
+            name="apellido"
+            type="text" 
+            required
+            minlength="2"
+            #apellido="ngModel"
+            placeholder="Apellido">
+          </ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
+          <p *ngIf="apellido.errors?.['required']">El apellido es requerido</p>
+          <p *ngIf="apellido.errors?.['minlength']">El apellido debe tener al menos 2 caracteres</p>
+        </div>
+
+        <!-- Campo Email -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="usuario.email" 
+            name="email"
+            type="email" 
+            required
+            email
+            #email="ngModel"
+            placeholder="Email">
+          </ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
+          <p *ngIf="email.errors?.['required']">El email es requerido</p>
+          <p *ngIf="email.errors?.['email']">Ingrese un email válido</p>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="usuario.password" 
+            name="password"
+            [type]="showPassword ? 'text' : 'password'"
+            required
+            minlength="6"
+            #password="ngModel"
+            placeholder="Contraseña">
+          </ion-input>
+          <ion-icon 
+            [name]="showPassword ? 'eye-off' : 'eye'" 
+            slot="end"
+            (click)="togglePassword()">
+          </ion-icon>
+        </ion-item>
+        <div class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
+          <p *ngIf="password.errors?.['required']">La contraseña es requerida</p>
+          <p *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</p>
+        </div>
+
+        <!-- Campo Confirmar Contraseña -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="confirmPassword" 
+            name="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            required
+            #confirmPasswordInput="ngModel"
+            placeholder="Confirmar Contraseña">
+          </ion-input>
+          <ion-icon 
+            [name]="showConfirmPassword ? 'eye-off' : 'eye'" 
+            slot="end"
+            (click)="toggleConfirmPassword()">
+          </ion-icon>
+        </ion-item>
+        <div class="error-message" *ngIf="confirmPasswordInput.dirty && usuario.password !== confirmPassword">
+          <p>Las contraseñas no coinciden</p>
+        </div>
+      </ion-list>
+
+      <!-- Botón de registro -->
+      <ion-button 
+        type="submit" 
+        expand="block" 
+        class="signup-button"
+        [disabled]="registerForm.invalid || isLoading || usuario.password !== confirmPassword">
+        {{ isLoading ? 'Registrando...' : 'Registrarse' }}
+      </ion-button>
+
+      <!-- Volver a login -->
+      <div class="login-link">
+        <p>¿Ya tienes cuenta? <a [routerLink]="['/login']">Inicia sesión aquí</a></p>
+      </div>
+    </form>
+  </div>
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
