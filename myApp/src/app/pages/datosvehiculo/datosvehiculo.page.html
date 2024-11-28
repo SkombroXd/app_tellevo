@@ -1,39 +1,60 @@
-<ion-content [fullscreen]="true">
-  <!-- Contenedor principal -->
-  <ion-content>
-    <!-- Título superior con fondo azul -->
-    <div class="header">
-      <h1>INFORMACIÓN VEHÍCULO</h1>
-    </div>
-
-    <!-- Formulario de información de vehículo -->
-    <div class="signup-form">
-      <ion-list>
-
-        <!-- Campo Patente Vehículo -->
-        <ion-item class="input-field">
-          <ion-input type="text" placeholder="Patente Vehículo"></ion-input>
-        </ion-item>
-
-        <!-- Campo Marca -->
-        <ion-item class="input-field">
-          <ion-input type="text" placeholder="Marca"></ion-input>
-        </ion-item>
-
-        <!-- Campo Modelo -->
-        <ion-item class="input-field">
-          <ion-input type="text" placeholder="Modelo"></ion-input>
-        </ion-item>
-
-        <!-- Campo Color -->
-        <ion-item class="input-field">
-          <ion-input type="text" placeholder="Color"></ion-input>
-        </ion-item>
-
-      </ion-list>
-
-      <!-- Botón de actualizar información -->
-      <ion-button [routerLink]="['/tabsc/homec']" expand="block" class="signup-button">Agregar Vehiculo</ion-button>
-    </div>
-  </ion-content>
-</ion-content>
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <h1>INFORMACIÓN VEHÍCULO</h1>
+  </div>
+
+  <div class="signup-form">
+    <form (ngSubmit)="agregarVehiculo()">
+      <ion-list>
+        <!-- Campo Patente Vehículo -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="vehiculo.patente" 
+            name="patente"
+            type="text" 
+            placeholder="Patente Vehículo">
+          </ion-input>
+        </ion-item>
+
+        <!-- Campo Marca -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="vehiculo.marca" 
+            name="marca"
+            type="text" 
+            placeholder="Marca">
+          </ion-input>
+        </ion-item>
+
+        <!-- Campo Modelo -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="vehiculo.modelo" 
+            name="modelo"
+            type="text" 
+            placeholder="Modelo">
+          </ion-input>
+        </ion-item>
+
+        <!-- Campo Color -->
+        <ion-item class="input-field">
+          <ion-input 
+            [(ngModel)]="vehiculo.color" 
+            name="color"
+            type="text" 
+            placeholder="Color">
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <!-- Botón de agregar vehículo -->
+      <ion-button 
+        type="submit" 
+        expand="block" 
+        class="signup-button">
+        Agregar Vehículo
+      </ion-button>
+    </form>
+  </div>
+</ion-content>
+
