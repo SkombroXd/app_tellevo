@@ -2,7 +2,7 @@
 .header {
     background-color: #3B82F6; /* Azul */
     text-align: center;
-    padding: 15px;
+    padding: 20px;
     border-radius: 0 0 20px 20px;
   }
   
@@ -10,6 +10,7 @@
     color: white;
     font-size: 1.8em;
     font-weight: bold;
+    margin: 0;
   }
   
   /* Subtítulo de viajes disponibles */
@@ -27,78 +28,32 @@
   
   /* Estilo de la lista de viajes */
   .trip-list {
-    padding: 10px;
+    padding: 20px;
   }
   
   .trip-card {
     margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .trip-card p {
-    margin: 5px 0;
-    font-size: 0.95em;
-    color:  white;
+    margin: 8px 0;
+    font-size: 1em;
+    color: white;
   }
   
   .trip-card p strong {
-    color: #FF0000; /* Color rojo para resaltar pasajeros */
+    color: #3B82F6;
   }
   
   .travel-button {
     border-radius: 10px;
     font-size: 1.1em;
   }
-  /* Encabezado con fondo azul */
-.header {
-    background-color: #3B82F6; /* Azul */
+  
+  .no-trips {
     text-align: center;
-    padding: 15px;
-    border-radius: 0 0 20px 20px;
-  }
-  
-  .header h1 {
-    color: white;
-    font-size: 1.8em;
-    font-weight: bold;
-  }
-  
-  /* Subtítulo de viajes realizados */
-  .subheader {
-    margin-top: 20px;
-    text-align: left;
-    padding: 0 15px;
-  }
-  
-  .subheader h2 {
-    font-size: 1.4em;
-    color: #3B82F6;
-    font-weight: bold;
-  }
-  
-  /* Estilo de la lista de viajes realizados */
-  .trip-list {
-    padding: 10px;
-  }
-  
-  .trip-card {
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .trip-card p {
-    margin: 5px 0;
-    font-size: 0.95em;
-    color: white;
-  }
-  
-  .trip-card p strong {
-    color: #FF0000; /* Color rojo para resaltar la información */
-  }
-  
-  .travel-button {
-    border-radius: 10px;
+    padding: 40px 20px;
     font-size: 1.1em;
   }

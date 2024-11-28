@@ -1,43 +1,24 @@
 <ion-content [fullscreen]="true">
-  <ion-content>
-      <!-- Encabezado con el título -->
-      <div class="header">
-        <h1>TE LLEVO!</h1>
-      </div>
-    
-      <!-- Subtítulo de viajes realizados -->
-      <div class="subheader">
-        <h2>VIAJES REALIZADOS</h2>
-      </div>
-    
-      <!-- Lista de viajes realizados -->
-      <div class="trip-list">
-        <ion-card class="trip-card">
-          <ion-card-content>
-            <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
-            <p><strong>DESTINO:</strong> Concepción, Chile</p>
-            <p><strong>CONDUCTOR:</strong> Juan Pérez</p>
-            <p><strong>FECHA:</strong> 25/09/2024</p>
-          </ion-card-content>
-        </ion-card>
-    
-        <ion-card class="trip-card">
-          <ion-card-content>
-            <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
-            <p><strong>DESTINO:</strong> Concepción, Chile</p>
-            <p><strong>CONDUCTOR:</strong> María López</p>
-            <p><strong>FECHA:</strong> 20/09/2024</p>
-          </ion-card-content>
-        </ion-card>
-    
-        <ion-card class="trip-card">
-          <ion-card-content>
-            <p><strong>PARTIDA:</strong> DUOC UC, Chile</p>
-            <p><strong>DESTINO:</strong> Concepción, Chile</p>
-            <p><strong>CONDUCTOR:</strong> Luis Martínez</p>
-            <p><strong>FECHA:</strong> 15/09/2024</p>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </ion-content>      
+  <div class="header">
+    <h1>MIS VIAJES RESERVADOS</h1>
+  </div>
+
+  <div class="trip-list">
+    <ion-card *ngFor="let viaje of viajesReservados" class="trip-card">
+      <ion-card-content>
+        <div class="trip-info">
+          <p><strong>Conductor:</strong> {{ viaje.nombrec }}</p>
+          <p><strong>Origen:</strong> {{ viaje.ubicacionActual }}</p>
+          <p><strong>Destino:</strong> {{ viaje.destino }}</p>
+          <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
+          <p><strong>Hora:</strong> {{ viaje.hora }}</p>
+          <p><strong>Costo:</strong> ${{ viaje.costo }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="viajesReservados.length === 0" class="no-trips">
+      <p>No tienes viajes reservados</p>
+    </div>
+  </div>
 </ion-content>

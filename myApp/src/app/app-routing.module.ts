@@ -4,6 +4,8 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { TabscComponent } from './components/tabsc/tabsc.component';
 import { AuthGuard } from './services/auth.guard';
 import { ConductorGuard } from './services/conductor.guard';
+import { NoAuthGuard } from './services/no-auth.guard';
+import { VehiculoGuard } from './services/vehiculo.guard';
 
 const routes: Routes = [
   {
@@ -13,11 +15,13 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
+    canActivate: [NoAuthGuard]
   },
   {
     path: 'register',
-    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule),
+    canActivate: [NoAuthGuard]
   },
   {
     path: 'tipocuenta',
@@ -27,7 +31,7 @@ const routes: Routes = [
   {
     path: 'datosvehiculo',
     loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then( m => m.DatosvehiculoPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, VehiculoGuard]
   },
   {
     path: 'tabs',
@@ -67,6 +71,10 @@ const routes: Routes = [
       },
     ]
   },
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];
 
 @NgModule({

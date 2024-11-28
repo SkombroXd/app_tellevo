@@ -1,8 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Viaje } from '../interfaces/viaje';
-import { Observable, map } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
+import { of } from 'rxjs';
+
+interface Reserva {
+  id: string;
+  viajeId: string;
+  userId: string;
+  fecha: Date;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -119,5 +127,68 @@ export class ViajeService {
     
     await this.agregarViaje(viaje);
     return true;
+  }
+
+  obtenerViajesPorConductor(conductorId: string): Observable<Viaje[]> {
+    return this.firestore.collection<Viaje>(this.viajesCollection, 
+      ref => ref.where('userId', '==', conductorId)
+    ).valueChanges({ idField: 'id' })
+    .pipe(
+      map(viajes => {
+        return viajes.sort((a, b) => {
+          const fechaA = new Date(`${a.fecha} ${a.hora}`);
+          const fechaB = new Date(`${b.fecha} ${b.hora}`);
+          return fechaB.getTime() - fechaA.getTime();
+        });
+      })
+    );
+  }
+
+  async cancelarViaje(viajeId: string): Promise<void> {
+    try {
+      // Primero verificamos si hay reservas activas
+      const reservas = await this.firestore
+        .collection(this.reservasCollection)
+        .ref.where('viajeId', '==', viajeId)
+        .get();
+
+      // Si hay reservas, las eliminamos
+      const batch = this.firestore.firestore.batch();
+      reservas.docs.forEach(doc => {
+        batch.delete(doc.ref);
+      });
+
+      // Eliminamos el viaje
+      batch.delete(this.firestore.collection(this.viajesCollection).doc(viajeId).ref);
+
+      // Ejecutamos todas las operaciones
+      await batch.commit();
+    } catch (error) {
+      console.error('Error al cancelar el viaje:', error);
+      throw error;
+    }
+  }
+
+  obtenerViajesPorPasajero(pasajeroId: string): Observable<Viaje[]> {
+    return this.firestore.collection<Reserva>(this.reservasCollection, 
+      ref => ref.where('userId', '==', pasajeroId)
+    ).valueChanges({ idField: 'id' }).pipe(
+      switchMap(reservas => {
+        if (reservas.length === 0) return of([]);
+        
+        const viajeIds = reservas.map(r => r.viajeId);
+        return this.firestore.collection<Viaje>(this.viajesCollection, 
+          ref => ref.where('id', 'in', viajeIds)
+        ).valueChanges({ idField: 'id' }).pipe(
+          map(viajes => {
+            return viajes.sort((a, b) => {
+              const fechaA = new Date(`${a.fecha} ${a.hora}`);
+              const fechaB = new Date(`${b.fecha} ${b.hora}`);
+              return fechaB.getTime() - fechaA.getTime();
+            });
+          })
+        );
+      })
+    );
   }
 }
