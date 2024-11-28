@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TabscComponent } from './components/tabsc/tabsc.component';
+import { AuthGuard } from './services/auth.guard';
+import { ConductorGuard } from './services/conductor.guard';
 
 const routes: Routes = [
   {
@@ -19,15 +21,18 @@ const routes: Routes = [
   },
   {
     path: 'tipocuenta',
-    loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then( m => m.TipocuentaPageModule)
+    loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then( m => m.TipocuentaPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'datosvehiculo',
-    loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then( m => m.DatosvehiculoPageModule)
+    loadChildren: () => import('./pages/datosvehiculo/datosvehiculo.module').then( m => m.DatosvehiculoPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'tabs',
     component: TabsComponent,
+    canActivate: [AuthGuard],
     children:[
       {
         path: 'perfilpasajero',
@@ -46,6 +51,7 @@ const routes: Routes = [
   {
     path: 'tabsc',
     component: TabscComponent,
+    canActivate: [AuthGuard, ConductorGuard],
     children:[
       {
         path: 'perfilconductor',
@@ -61,8 +67,6 @@ const routes: Routes = [
       },
     ]
   },
-
-
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ViajeService } from '../../services/viaje.service';
+import { AlertController } from '@ionic/angular';
 
 interface Viaje {
   id: string;
@@ -33,11 +34,16 @@ export class HomecPage implements OnInit {
 
   nombreConductor: string = 'Usuario';
   cantidadPasajeros: number = 1;
+  maxPasajeros: number = 4;
   costoViaje: number = 1000;
   horaViaje: string = '00:00';
   viajes: Viaje[] = [];
 
-  constructor(private http: HttpClient, private viajeService: ViajeService) {}
+  constructor(
+    private http: HttpClient, 
+    private viajeService: ViajeService,
+    private alertController: AlertController
+  ) {}
 
   async ngOnInit() {
     const coordinates = await Geolocation.getCurrentPosition();
@@ -187,33 +193,78 @@ export class HomecPage implements OnInit {
     });
   }
 
-  agregarViaje() {
+  async agregarViaje() {
     if (!this.destination) {
-      alert('Por favor selecciona un destino en el mapa.');
+      await this.mostrarAlerta('Error', 'Por favor selecciona un destino en el mapa.');
       return;
     }
-  
-    const id = this.viajeService.generarId(); // Generar un ID único
-    const nuevoViaje: Viaje = {
-      id: id, // Agregar el ID generado
+
+    if (!this.horaViaje) {
+      await this.mostrarAlerta('Error', 'Por favor selecciona una hora para el viaje.');
+      return;
+    }
+
+    if (this.cantidadPasajeros > this.maxPasajeros) {
+      await this.mostrarAlerta('Error', 'El máximo de pasajeros permitido es 4');
+      return;
+    }
+
+    const fechaActual = new Date().toISOString().split('T')[0];
+    
+    const nuevoViaje = {
+      id: this.viajeService.generarId(),
       nombrec: this.nombreConductor,
       ubicacionActual: this.ubicacionActual,
       destino: this.searchQuery,
       cantidadp: this.cantidadPasajeros,
       costo: this.costoViaje,
-      fecha: new Date().toLocaleDateString(),
+      fecha: fechaActual,
       hora: this.horaViaje,
+      userId: ''
     };
-  
-    this.viajeService
-      .agregarViaje(nuevoViaje)
-      .then(() => {
-        alert('Viaje agregado con éxito.');
-        console.log('Viaje guardado en Firebase:', nuevoViaje);
-      })
-      .catch((error) => {
-        alert('Error al guardar el viaje.');
-        console.error('Error al guardar el viaje:', error);
-      });
+
+    try {
+      await this.viajeService.agregarViajeConductor(nuevoViaje);
+      await this.mostrarAlerta('Éxito', 'Viaje agregado correctamente.');
+      this.limpiarFormulario();
+    } catch (error) {
+      await this.mostrarAlerta('Error', error instanceof Error ? error.message : 'No se pudo agregar el viaje');
+    }
+  }
+
+  private limpiarFormulario() {
+    this.cantidadPasajeros = 1;
+    this.costoViaje = 1000;
+    this.horaViaje = '00:00';
+    this.searchQuery = '';
+    this.destination = null;
+    if (this.destinationMarker) {
+      this.destinationMarker.remove();
+    }
+    if (this.map.getLayer('route')) {
+      this.map.removeLayer('route');
+      this.map.removeSource('route');
+    }
+  }
+
+  private async mostrarAlerta(titulo: string, mensaje: string) {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  decrementarPasajeros() {
+    if (this.cantidadPasajeros > 1) {
+      this.cantidadPasajeros--;
+    }
+  }
+
+  incrementarPasajeros() {
+    if (this.cantidadPasajeros < this.maxPasajeros) {
+      this.cantidadPasajeros++;
+    }
   }
 }  

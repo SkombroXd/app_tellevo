@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ViajeService } from '../../services/viaje.service';
 import { Viaje } from '../../interfaces/viaje';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,10 @@ import { Viaje } from '../../interfaces/viaje';
 export class HomePage implements OnInit {
   viajesDisponibles: Viaje[] = [];
 
-  constructor(private viajeService: ViajeService) {}
+  constructor(
+    private viajeService: ViajeService,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.obtenerViajesDisponibles();
@@ -19,19 +23,25 @@ export class HomePage implements OnInit {
 
   obtenerViajesDisponibles() {
     this.viajeService.obtenerViajes().subscribe((viajes) => {
-      // Filtra solo los viajes con pasajeros disponibles
-      this.viajesDisponibles = viajes.filter(viaje => viaje.cantidadp > 0);
+      this.viajesDisponibles = viajes;
     });
   }
 
-  reservarViaje(viaje: Viaje) {
-    if (viaje.cantidadp > 0) {
-      viaje.cantidadp--;
-      this.viajeService.actualizarViaje(viaje).then(() => {
-        console.log('Viaje reservado');
-      }).catch((error) => {
-        console.error('Error al reservar el viaje:', error);
-      });
+  async reservarViaje(viaje: Viaje) {
+    try {
+      await this.viajeService.reservarViaje(viaje);
+      this.mostrarAlerta('Éxito', 'Viaje reservado correctamente');
+    } catch (error) {
+      this.mostrarAlerta('Error', error instanceof Error ? error.message : 'No se pudo reservar el viaje');
     }
+  }
+
+  private async mostrarAlerta(titulo: string, mensaje: string) {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

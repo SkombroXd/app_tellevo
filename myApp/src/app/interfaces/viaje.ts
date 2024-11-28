@@ -7,4 +7,5 @@ export interface Viaje {
     costo: number;
     fecha: string;
     hora: string;
+    userId?: string;
 }
