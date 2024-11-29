@@ -1,0 +1,44 @@
+/* Título superior con fondo azul */
+.header {
+    background-color: #3B82F6; /* Azul */
+    text-align: center;
+    padding: 20px;
+    border-radius: 0 0 20px 20px;
+  }
+  
+  .header h1 {
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+  }
+  
+  /* Formulario de información de vehículo */
+  .signup-form {
+    margin: 20px;
+  }
+  
+  /* Estilos de los campos de entrada */
+  .input-field {
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-field ion-input {
+    padding-left: 10px;
+  }
+  
+  /* Estilos del botón de actualizar */
+  .signup-button {
+    background-color: #3B82F6; /* Azul */
+    border-radius: 20px;
+    font-size: 1.2em;
+    height: 50px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-transform: uppercase;
+  }
+  

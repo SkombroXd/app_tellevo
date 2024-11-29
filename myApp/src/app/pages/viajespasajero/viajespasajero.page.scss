@@ -1,0 +1,59 @@
+/* Encabezado con fondo azul */
+.header {
+    background-color: #3B82F6; /* Azul */
+    text-align: center;
+    padding: 20px;
+    border-radius: 0 0 20px 20px;
+  }
+  
+  .header h1 {
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Subtítulo de viajes disponibles */
+  .subheader {
+    margin-top: 20px;
+    text-align: left;
+    padding: 0 15px;
+  }
+  
+  .subheader h2 {
+    font-size: 1.4em;
+    color: #3B82F6;
+    font-weight: bold;
+  }
+  
+  /* Estilo de la lista de viajes */
+  .trip-list {
+    padding: 20px;
+  }
+  
+  .trip-card {
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trip-card p {
+    margin: 8px 0;
+    font-size: 1em;
+    color: white;
+  }
+  
+  .trip-card p strong {
+    color: #3B82F6;
+  }
+  
+  .travel-button {
+    border-radius: 10px;
+    font-size: 1.1em;
+  }
+  
+  .no-trips {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 1.1em;
+  }

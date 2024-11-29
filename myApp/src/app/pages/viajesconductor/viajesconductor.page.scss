@@ -1,0 +1,49 @@
+/* Encabezado con fondo azul */
+.header {
+  background-color: #3B82F6;
+  text-align: center;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+
+  h1 {
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+.trip-list {
+  padding: 20px;
+}
+
+.trip-card {
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .trip-info {
+    p {
+      margin: 8px 0;
+      font-size: 1em;
+
+      strong {
+        color: #3B82F6;
+      }
+    }
+  }
+
+  .trip-actions {
+    margin-top: 15px;
+    
+    ion-button {
+      margin: 0;
+    }
+  }
+}
+
+.no-trips {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 1.1em;
+}

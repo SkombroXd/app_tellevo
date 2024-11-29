@@ -1,0 +1,92 @@
+/* Encabezado con fondo azul */
+.header {
+    background-color: #3B82F6; /* Azul */
+    text-align: center;
+    padding: 15px;
+    border-radius: 0 0 20px 20px;
+  }
+  
+  .header h1 {
+    color: white;
+    font-size: 1.8em;
+    font-weight: bold;
+  }
+  
+  /* Sección del perfil de usuario */
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+  }
+  
+  .user-info {
+    text-align: center;
+  }
+  
+  .user-info h2 {
+    color: #3B82F6;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .rating ion-icon {
+    color: #FFD700; /* Color dorado para las estrellas */
+  }
+  
+  .user-info p {
+    margin: 5px 0;
+    font-size: 1em;
+  }
+  
+  /* Opciones de edición e información del vehículo */
+  .option-list {
+    margin-top: 30px;
+    padding: 0 20px;
+  }
+  
+  .option-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #3B82F6;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+  }
+  
+  .option-item ion-icon {
+    font-size: 1.5em;
+    color: #3B82F6;
+  }
+  
+  /* Enlaces de pie de página */
+  .footer-links {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .footer-links a {
+    color: #3B82F6;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1em;
+  }
+  
+  .footer-links .delete-account {
+    color: #c41515;
+  }
+  
+  .logout-button {
+    margin: 20px;
+    --border-radius: 10px;
+  }

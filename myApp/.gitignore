@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+
+# Ionic/Angular build outputs
+www/
+platforms/
+dist/
+build/
+
+# Compiled TypeScript
+*.tsbuildinfo
+
+# Generated files
+.sourcemaps/
+.sourcemaps/*.map
+*.ngsummary.json
+*.ngfactory.ts
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# MacOS files
+.DS_Store
+
+# Environment files
+environment.ts
+environment.prod.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular specific
+.angular/
+.angular/cache
+
+# Ionic specific
+ios/
+android/
+capacitor.config.json

@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+  <ion-content>
+    <!-- Encabezado con el título -->
+    <div class="header">
+      <h1>TE LLEVO!</h1>
+    </div>
+  
+    <!-- Sección del perfil del usuario -->
+    <div class="profile-section">
+      <img src="../../../assets/servicio-al-cliente.png" alt="Avatar" class="avatar">
+      <div class="user-info">
+        <h2>Kevin Fierro</h2>
+      </div>
+    </div>
+  
+    <!-- Opciones de edición e información del vehículo -->
+    <div class="option-list">
+      <div class="option-item">
+        <p>EDITAR INFORMACION</p>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+  
+    <!-- Enlaces para cerrar sesión y eliminar cuenta -->
+    <div class="footer-links">
+      <a [routerLink]="['/tipocuenta']">Cambiar tipo de cuenta</a>
+      <a (click)="logout()" class="delete-account">Cerrar sesión</a>
+    </div>
+  </ion-content>  
+</ion-content>

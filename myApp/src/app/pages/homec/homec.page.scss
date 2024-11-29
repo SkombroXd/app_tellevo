@@ -1,0 +1,194 @@
+#map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1; /* Asegura que el mapa esté debajo de los controles */
+}
+
+.trip-controls {
+  position: absolute;
+  bottom: 80px; /* Aumenta el espacio para evitar superposición con la barra de navegación */
+  left: 10px;
+  right: 10px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2; /* Coloca los controles sobre el mapa */
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Ajusta el margen entre los controles */
+  gap: 10px; /* Añade espacio entre los elementos */
+}
+
+.control-item label {
+  font-size: 1em;
+  color: #333;
+  flex: 1;
+}
+
+.control-button {
+  background-color: #555; /* Color más oscuro para el botón */
+  color: #fff; /* Texto blanco para contraste */
+  border: none;
+  padding: 8px 12px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 40px; /* Tamaño fijo para que los botones sean parejos */
+}
+
+.control-button:hover {
+  background-color: #333; /* Color aún más oscuro al pasar el ratón */
+}
+
+.control-input {
+  border: none;
+  background-color: #666; /* Color más oscuro para el input de hora */
+  color: #fff; /* Texto blanco para contraste */
+  padding: 5px;
+  border-radius: 5px;
+  width: 100px; /* Aumenta el ancho del campo de hora */
+  text-align: center;
+}
+
+.control-input::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Invertir color del icono del selector de tiempo para que sea visible en fondo oscuro */
+}
+
+.add-trip-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  background-color: #444; /* Color más oscuro para el botón */
+  color: #fff; /* Texto blanco */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-trip-button:hover {
+  background-color: #222; /* Aún más oscuro al pasar el ratón */
+}
+
+.search-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 2; /* Asegura que esté sobre el mapa */
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 3; /* Encima del mapa */
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+  color: #000; /* Texto negro */
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.control-item label,
+.control-item span {
+  color: #000; /* Cambia el texto y números a negro */
+}
+
+.add-trip-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  background-color: #4CAF50; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-trip-button:hover {
+  background-color: #45a049; /* Color al pasar el ratón por encima */
+}
+
+// Estilos para el alert de notificaciones
+:host ::ng-deep .custom-alert {
+  .alert-wrapper {
+    --min-width: 300px;
+    --max-width: 90%;
+    --width: 90%;
+    --max-height: 90%;
+    --height: auto;
+    --background: #1e1e1e;
+  }
+
+  .alert-head h2 {
+    color: white;
+    font-size: 20px;
+  }
+
+  .alert-message {
+    color: #cccccc;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-line;
+  }
+
+  .alert-button {
+    color: #4285f4;
+  }
+
+  .notification-item {
+    transition: background-color 0.3s ease;
+    
+    &:hover {
+      background-color: #333333;
+    }
+    
+    .notification-time {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+    
+    .notification-message {
+      line-height: 1.4;
+    }
+  }
+}

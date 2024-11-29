@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true">
+  <!-- Imagen superior -->
+  <div class="header-image">
+    <img src="../../../assets/coche.png" alt="Te llevo">
+  </div>
+
+  <!-- Título principal -->
+  <div class="title">
+    <h1>Te Llevo!</h1>
+    <p>COMPARTE EL VIAJE, DISFRUTA EL DESTINO</p>
+  </div>
+
+  <!-- Formulario de Login -->
+  <div class="login-form">
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <ion-list>
+        <!-- Campo Email -->
+        <ion-item lines="none" class="input-field">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input 
+            type="email" 
+            [(ngModel)]="usuario.email" 
+            name="email" 
+            required
+            email
+            #email="ngModel"
+            placeholder="Email">
+          </ion-input>
+        </ion-item>
+        <div class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
+          <p *ngIf="email.errors?.['required']">El email es requerido</p>
+          <p *ngIf="email.errors?.['email']">Ingrese un email válido</p>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <ion-item lines="none" class="input-field">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input 
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="usuario.password" 
+            name="password"
+            required
+            minlength="6"
+            #password="ngModel"
+            placeholder="Contraseña">
+          </ion-input>
+          <ion-icon 
+            [name]="showPassword ? 'eye-off' : 'eye'" 
+            slot="end"
+            (click)="togglePassword()">
+          </ion-icon>
+        </ion-item>
+        <div class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
+          <p *ngIf="password.errors?.['required']">La contraseña es requerida</p>
+          <p *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</p>
+        </div>
+      </ion-list>
+      
+      <!-- Botón de Login -->
+      <ion-button 
+        type="submit" 
+        expand="block" 
+        class="login-button"
+        [disabled]="loginForm.invalid || isLoading">
+        {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+      </ion-button>
+
+      <!-- Crear cuenta -->
+      <div class="create-account">
+        <p>¿Aún no tienes cuenta? <a [routerLink]="['/register']">Crea tu cuenta aquí</a></p>
+      </div>
+    </form>
+  </div>
+</ion-content>
