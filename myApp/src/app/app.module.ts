@@ -66,7 +66,11 @@ import { CommonModule } from '@angular/common';
 
     HttpClientModule,
 
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence({
+
+      synchronizeTabs: true
+
+    }),
 
     CommonModule
 
