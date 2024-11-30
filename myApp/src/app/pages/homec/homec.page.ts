@@ -11,6 +11,7 @@ import { Notificacion } from '../../interfaces/notificacion';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NotificationsModalComponent } from '../../components/notifications-modal/notifications-modal.component';
+import { environment } from '../../../environments/environment';
 
 interface Viaje {
   id: string;
@@ -46,6 +47,9 @@ export class HomecPage implements OnInit {
   viajes: Viaje[] = [];
   notificacionesNoLeidas = 0;
 
+  mapLoaded: boolean = false;
+  mapError: boolean = false;
+
   constructor(
     private http: HttpClient, 
     private viajeService: ViajeService,
@@ -58,31 +62,34 @@ export class HomecPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const coordinates = await Geolocation.getCurrentPosition();
-    this.lat = coordinates.coords.latitude;
-    this.lon = coordinates.coords.longitude;
+    try {
+      const coordinates = await Geolocation.getCurrentPosition();
+      this.lat = coordinates.coords.latitude;
+      this.lon = coordinates.coords.longitude;
 
-    (mapboxgl as any).accessToken = 'pk.eyJ1Ijoia2VmaWVycm8iLCJhIjoiY20zZ2NoYm91MDJ3cDJxcHRseGZxZnpmdyJ9.EZiJXVqhIfThpB9n3C308g';
+      (mapboxgl as any).accessToken = environment.mapboxToken;
 
-    await this.obtenerDireccionOrigen();
+      await this.obtenerDireccionOrigen();
+      await this.initMap();
+      
+      this.mapLoaded = true;
+      this.mapError = false;
 
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [this.lon, this.lat],
-      zoom: 12,
-    });
+      new mapboxgl.Marker().setLngLat([this.lon, this.lat]).addTo(this.map);
+      this.destinationMarker = new mapboxgl.Marker({ color: 'red' });
 
-    new mapboxgl.Marker().setLngLat([this.lon, this.lat]).addTo(this.map);
-    this.destinationMarker = new mapboxgl.Marker({ color: 'red' });
+      this.map.on('click', (event: mapboxgl.MapMouseEvent) => {
+        const lngLat = event.lngLat;
+        this.setDestination([lngLat.lng, lngLat.lat]);
+      });
 
-    this.map.on('click', (event: mapboxgl.MapMouseEvent) => {
-      const lngLat = event.lngLat;
-      this.setDestination([lngLat.lng, lngLat.lat]);
-    });
-
-    await this.cargarNotificaciones();
-    await this.cargarDatosConductor();
+      await this.cargarNotificaciones();
+      await this.cargarDatosConductor();
+    } catch (error) {
+      console.error('Error al inicializar el mapa:', error);
+      this.mapError = true;
+      this.mapLoaded = false;
+    }
   }
 
   private async cargarDatosConductor() {
@@ -355,5 +362,47 @@ export class HomecPage implements OnInit {
       console.error('Error al mostrar notificaciones:', error);
       await this.mostrarAlerta('Error', 'No se pudieron cargar las notificaciones');
     }
+  }
+
+  async reloadMap() {
+    try {
+      this.mapError = false;
+      this.mapLoaded = false;
+      
+      if (this.map) {
+        this.map.remove();
+      }
+      
+      await this.ngOnInit();
+    } catch (error) {
+      console.error('Error al recargar el mapa:', error);
+      this.mapError = true;
+    }
+  }
+
+  private initMap() {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: [this.lon, this.lat],
+          zoom: 12
+        });
+
+        this.map.on('load', () => {
+          console.log('Mapa cargado correctamente');
+          resolve();
+        });
+
+        this.map.on('error', (e) => {
+          console.error('Error en el mapa:', e);
+          reject(e);
+        });
+      } catch (error) {
+        console.error('Error al inicializar el mapa:', error);
+        reject(error);
+      }
+    });
   }
 }  
