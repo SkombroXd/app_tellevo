@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import { ModalController } from '@ionic/angular';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ModalController, Platform } from '@ionic/angular';
 
 import { Notificacion } from '../../interfaces/notificacion';
 
@@ -15,7 +16,7 @@ import 'firebase/compat/firestore';
 
     <ion-header>
 
-      <ion-toolbar color="dark">
+      <ion-toolbar>
 
         <ion-title>Notificaciones</ion-title>
 
@@ -33,7 +34,7 @@ import 'firebase/compat/firestore';
 
     </ion-header>
 
-    <ion-content class="ion-padding" color="dark">
+    <ion-content class="ion-padding">
 
       <div class="notifications-container">
 
@@ -75,6 +76,28 @@ import 'firebase/compat/firestore';
 
   styles: [`
 
+    :host {
+
+      --background-color: var(--ion-background-color);
+
+      --text-color: var(--ion-text-color);
+
+      --item-background: var(--ion-item-background);
+
+      --border-color: var(--ion-color-primary);
+
+    }
+
+
+
+    ion-content {
+
+      --background: var(--background-color);
+
+    }
+
+
+
     .notifications-container {
 
       display: flex;
@@ -89,15 +112,19 @@ import 'firebase/compat/firestore';
 
     .notification-item {
 
-      background-color: #2a2a2a;
+      background-color: var(--item-background);
 
       border-radius: 8px;
 
       padding: 15px;
 
-      border-left: 3px solid #4285f4;
+      border-left: 3px solid var(--border-color);
 
-      transition: background-color 0.2s ease;
+      transition: all 0.3s ease;
+
+      margin-bottom: 8px;
+
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 
     }
 
@@ -105,7 +132,7 @@ import 'firebase/compat/firestore';
 
     .notification-item.unread {
 
-      background-color: #333333;
+      background-color: rgba(var(--ion-color-primary-rgb), 0.1);
 
     }
 
@@ -113,7 +140,7 @@ import 'firebase/compat/firestore';
 
     .notification-content {
 
-      color: white;
+      color: var(--text-color);
 
       font-size: 14px;
 
@@ -127,7 +154,7 @@ import 'firebase/compat/firestore';
 
     .notification-hora {
 
-      color: #4285f4;
+      color: var(--ion-color-primary);
 
       font-size: 13px;
 
@@ -147,7 +174,7 @@ import 'firebase/compat/firestore';
 
     .notification-time {
 
-      color: #888;
+      color: var(--ion-color-medium);
 
       font-size: 12px;
 
@@ -169,9 +196,13 @@ import 'firebase/compat/firestore';
 
 
 
-    .error {
+    @media (prefers-color-scheme: dark) {
 
-      color: #ff4444;
+      .notification-item {
+
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+
+      }
 
     }
 
@@ -179,13 +210,17 @@ import 'firebase/compat/firestore';
 
 })
 
-export class NotificationsModalComponent implements OnInit {
+export class NotificationsModalComponent implements OnInit, OnDestroy {
 
   @Input() notificaciones: Notificacion[] = [];
 
+  private destroy$ = new Subject<void>();
+
+  private fechasFormateadas = new Map<string, string>();
 
 
-  constructor(private modalCtrl: ModalController) {}
+
+  constructor(private modalCtrl: ModalController, private platform: Platform) {}
 
 
 
@@ -226,6 +261,24 @@ export class NotificationsModalComponent implements OnInit {
 
 
   formatDate(timestamp: any): string {
+
+    const key = timestamp instanceof firebase.firestore.Timestamp ? 
+
+      timestamp.toDate().toISOString() : 
+
+      timestamp.toString();
+
+
+
+    if (this.fechasFormateadas.has(key)) {
+
+      return this.fechasFormateadas.get(key);
+
+    }
+
+
+
+    let fechaFormateada: string;
 
     try {
 
@@ -271,7 +324,7 @@ export class NotificationsModalComponent implements OnInit {
 
 
 
-      return new Intl.DateTimeFormat('es-ES', {
+      fechaFormateada = new Intl.DateTimeFormat('es-ES', {
 
         year: 'numeric',
 
@@ -294,6 +347,12 @@ export class NotificationsModalComponent implements OnInit {
       return 'Fecha no disponible';
 
     }
+
+
+
+    this.fechasFormateadas.set(key, fechaFormateada);
+
+    return fechaFormateada;
 
   }
 
@@ -322,6 +381,16 @@ export class NotificationsModalComponent implements OnInit {
     }
 
     return new Date(date).getTime();
+
+  }
+
+
+
+  ngOnDestroy() {
+
+    this.destroy$.next();
+
+    this.destroy$.complete();
 
   }
 
