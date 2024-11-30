@@ -1,51 +1,63 @@
-#map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1; /* Asegura que el mapa esté debajo de los controles */
+// Variables comunes
+:host {
+  --ion-text-color-filter: brightness(0) invert(var(--ion-text-color-invert, 0));
+  --ion-text-color-invert: calc((62 - var(--ion-text-color-rgb-lightness, 0)) / 62);
 }
 
-.trip-controls {
+// Estilos base
+#map {
   position: absolute;
-  bottom: 80px; /* Aumenta el espacio para evitar superposición con la barra de navegación */
-  left: 10px;
-  right: 10px;
-  padding: 15px;
+  inset: 0;
+  z-index: 1;
+}
+
+// Controles comunes
+.control-base {
   background: var(--ion-background-color);
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(var(--ion-color-dark-rgb), 0.1);
-  z-index: 2; /* Coloca los controles sobre el mapa */
+  z-index: 2;
 }
 
+// Controles del viaje
+.trip-controls {
+  @extend .control-base;
+  position: absolute;
+  bottom: 80px;
+  left: 10px;
+  right: 10px;
+  padding: 15px;
+}
+
+// Items de control
 .control-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px; /* Ajusta el margen entre los controles */
-  gap: 10px; /* Añade espacio entre los elementos */
+  margin-bottom: 10px;
+  gap: 10px;
+
+  label, span {
+    color: var(--ion-text-color);
+    font-size: 1em;
+    flex: 1;
+  }
 }
 
-.control-item label {
-  font-size: 1em;
-  color: var(--ion-text-color);
-  flex: 1;
-}
-
-.control-item span {
-  color: var(--ion-text-color);
+// Botones y entradas
+%button-base {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .control-button {
+  @extend %button-base;
   background-color: var(--ion-color-medium);
   color: var(--ion-color-medium-contrast);
-  border: none;
   padding: 8px 12px;
   font-size: 1.2em;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 40px; /* Tamaño fijo para que los botones sean parejos */
+  width: 40px;
 
   &:hover {
     background-color: var(--ion-color-medium-shade);
@@ -53,50 +65,33 @@
 }
 
 .control-input {
-  border: none;
+  @extend %button-base;
   background-color: var(--ion-item-background);
   color: var(--ion-text-color);
   padding: 5px;
-  border-radius: 5px;
-  width: 100px; /* Aumenta el ancho del campo de hora */
+  width: 100px;
   text-align: center;
-}
 
-.control-input::-webkit-calendar-picker-indicator {
-  filter: var(--ion-text-color-filter, brightness(0) invert(var(--ion-text-color-invert, 0)));
-  opacity: 0.8;
-  cursor: pointer;
+  &::-webkit-calendar-picker-indicator {
+    filter: var(--ion-text-color-filter);
+    opacity: 0.8;
+    cursor: pointer;
 
-  &:hover {
-    opacity: 1;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
-.add-trip-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.2em;
-  background-color: var(--ion-color-primary);
-  color: var(--ion-color-primary-contrast);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 10px;
-
-  &:hover {
-    background-color: var(--ion-color-primary-shade);
-  }
-}
-
+// Barra de búsqueda
 .search-bar {
+  @extend .control-base;
   position: absolute;
   top: 16px;
   left: 20px;
   right: 70px;
   display: flex;
   gap: 10px;
-  z-index: 2;
 
   input {
     flex: 1;
@@ -105,55 +100,45 @@
     border: 1px solid var(--ion-color-medium);
     background: var(--ion-background-color);
     color: var(--ion-text-color);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 }
 
+// Sugerencias
 .suggestions-container {
+  @extend .control-base;
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
   right: 0;
-  background: var(--ion-background-color);
-  border: 1px solid var(--ion-color-medium);
-  border-radius: 8px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 3;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .suggestions-list {
   list-style: none;
   padding: 0;
   margin: 0;
-}
 
-.suggestions-list li {
-  padding: 10px;
-  cursor: pointer;
-  color: var(--ion-text-color);
+  li {
+    padding: 10px;
+    cursor: pointer;
+    color: var(--ion-text-color);
 
-  &:hover {
-    background-color: var(--ion-color-light);
+    &:hover {
+      background-color: var(--ion-color-light);
+    }
   }
 }
 
-.control-item label,
-.control-item span {
-  color: var(--ion-text-color);
-}
-
+// Botón de agregar viaje
 .add-trip-button {
+  @extend %button-base;
   width: 100%;
   padding: 12px;
   font-size: 1.2em;
   background-color: var(--ion-color-primary);
   color: var(--ion-color-primary-contrast);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
   margin-top: 10px;
 
   &:hover {
@@ -161,59 +146,7 @@
   }
 }
 
-// Estilos para el alert de notificaciones
-:host ::ng-deep .custom-alert {
-  .alert-wrapper {
-    --min-width: 300px;
-    --max-width: 90%;
-    --width: 90%;
-    --max-height: 90%;
-    --height: auto;
-    --background: #1e1e1e;
-  }
-
-  .alert-head h2 {
-    color: white;
-    font-size: 20px;
-  }
-
-  .alert-message {
-    color: #cccccc;
-    font-size: 14px;
-    line-height: 1.5;
-    white-space: pre-line;
-  }
-
-  .alert-button {
-    color: #4285f4;
-  }
-
-  .notification-item {
-    transition: background-color 0.3s ease;
-    
-    &:hover {
-      background-color: #333333;
-    }
-    
-    .notification-time {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 5px;
-    }
-    
-    .notification-message {
-      line-height: 1.4;
-    }
-  }
-}
-
-// Agregar estas variables CSS en :host o :root
-:host {
-  --ion-text-color-filter: brightness(0) invert(var(--ion-text-color-invert, 0));
-  --ion-text-color-invert: calc((62 - var(--ion-text-color-rgb-lightness, 0)) / 62);
-}
-
-// Estilo para el botón de notificaciones
+// Notificaciones
 ion-fab {
   position: absolute;
   top: 10px;
@@ -222,44 +155,35 @@ ion-fab {
 
   ion-fab-button {
     --box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    
-    ion-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      border-radius: 50%;
-      padding: 4px;
-      min-width: 20px;
-      min-height: 20px;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  }
+
+  ion-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 50%;
+    padding: 4px;
+    min-width: 20px;
+    min-height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
-.map-loading {
+// Estados del mapa
+.map-loading, .map-error {
+  @extend .control-base;
   position: absolute;
-  top: 40%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  padding: 20px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(var(--ion-background-color-rgb), 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-
-  ion-spinner {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 10px;
-    color: var(--ion-color-primary);
-  }
 
   p {
     color: var(--ion-text-color);
@@ -269,30 +193,14 @@ ion-fab {
   }
 }
 
-.map-error {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--ion-background-color-rgb), 0.9);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.map-loading ion-spinner {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  color: var(--ion-color-primary);
+}
 
-  p {
-    color: var(--ion-text-color);
-    margin-bottom: 15px;
-    font-size: 16px;
-  }
-
-  ion-button {
-    --background: var(--ion-color-primary);
-    --color: var(--ion-color-primary-contrast);
-  }
+.map-error ion-button {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
 }
