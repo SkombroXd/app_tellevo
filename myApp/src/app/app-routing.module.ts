@@ -25,8 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'tipocuenta',
-    loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then(m => m.TipocuentaPageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./pages/tipocuenta/tipocuenta.module').then(m => m.TipocuentaPageModule)
   },
   {
     path: 'tabs',
@@ -89,7 +88,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { 
+      preloadingStrategy: PreloadAllModules,
+      useHash: true
+    })
   ],
   exports: [RouterModule]
 })
