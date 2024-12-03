@@ -154,6 +154,32 @@ export class ViajeService {
 
     try {
 
+      // Verificar si el pasajero ya tiene una reserva para este viaje
+
+      const reservaExistente = await this.firestore
+
+        .collection(this.reservasCollection, ref => 
+
+          ref.where('userId', '==', user.uid)
+
+             .where('viajeId', '==', viaje.id)
+
+        )
+
+        .get()
+
+        .toPromise();
+
+
+
+      if (!reservaExistente?.empty) {
+
+        throw new Error('Ya tienes una reserva para este viaje');
+
+      }
+
+
+
       const pasajeroDoc = await this.firestore.collection('usuarios').doc(user.uid).get().toPromise();
 
       const pasajeroData = pasajeroDoc?.data() as any;
@@ -162,7 +188,17 @@ export class ViajeService {
 
 
 
-      // Crear fecha actual y convertirla a ISO string
+      // Verificar si hay asientos disponibles
+
+      if (viaje.cantidadp <= 0) {
+
+        throw new Error('No hay asientos disponibles para este viaje');
+
+      }
+
+
+
+      // Crear fecha actual
 
       const fechaActual = new Date();
 
@@ -170,7 +206,7 @@ export class ViajeService {
 
 
 
-      // Crear y guardar la reserva directamente
+      // Crear y guardar la reserva
 
       await this.firestore.collection(this.reservasCollection).add({
 
@@ -437,6 +473,20 @@ export class ViajeService {
       })
 
     );
+
+  }
+
+
+
+  obtenerReservasUsuario(userId: string): Observable<Reserva[]> {
+
+    return this.firestore
+
+      .collection<Reserva>(this.reservasCollection, 
+
+        ref => ref.where('userId', '==', userId))
+
+      .valueChanges({ idField: 'id' });
 
   }
 

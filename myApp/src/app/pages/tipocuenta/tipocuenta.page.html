@@ -62,6 +62,26 @@
 
     </ion-grid>
 
+    <!-- Mensaje de error offline -->
+    <div *ngIf="offlineError" class="offline-error">
+      <div class="offline-icon">
+        <ion-icon *ngIf="!isRetrying" name="cloud-offline-outline"></ion-icon>
+        <ion-spinner *ngIf="isRetrying" name="crescent"></ion-spinner>
+      </div>
+      <p>
+        Sin conexión a Internet.<br>
+        Por favor, verifica tu conexión y vuelve a intentar.
+      </p>
+      
+      <ion-button 
+        (click)="reloadNet()" 
+        [disabled]="isRetrying"
+        expand="block">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        {{ isRetrying ? 'Reconectando...' : 'Reintentar conexión' }}
+      </ion-button>
+    </div>
+
   </ion-content>
 
 </ion-content>

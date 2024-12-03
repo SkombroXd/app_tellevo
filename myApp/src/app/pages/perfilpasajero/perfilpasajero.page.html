@@ -21,10 +21,17 @@
       </div>
     </div>
   
-    <!-- Enlaces para cerrar sesión y eliminar cuenta -->
+    <!-- Enlaces para cerrar sesión y cambiar tipo de cuenta -->
     <div class="footer-links">
-      <a [routerLink]="['/tipocuenta']">Cambiar tipo de cuenta</a>
-      <a (click)="logout()" class="delete-account">Cerrar sesión</a>
+      <ion-button class="change-account-btn" expand="block" fill="outline" [routerLink]="['/tipocuenta']">
+        <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
+        Cambiar tipo de cuenta
+      </ion-button>
+      
+      <ion-button class="logout-btn" expand="block" color="danger" (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar sesión
+      </ion-button>
     </div>
   </ion-content>  
 </ion-content>

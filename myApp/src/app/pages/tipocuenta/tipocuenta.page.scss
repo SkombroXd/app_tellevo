@@ -80,3 +80,101 @@
     max-width: 100%; /* Asegura que la imagen no desborde su contenedor */
     height: auto; /* Mantiene la proporción de la imagen */
   }
+  
+  // Base styles
+  .control-base {
+    background: var(--ion-background-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  // Error offline styles
+  .offline-error {
+    @extend .control-base;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    z-index: 1000;
+    border: 3px solid #871b1b;
+
+    p {
+      color: var(--ion-color-danger);
+      margin: 0 0 20px 0;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    ion-button {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+      --border-radius: 10px;
+      --padding-top: 15px;
+      --padding-bottom: 15px;
+      --padding-start: 25px;
+      --padding-end: 25px;
+      
+      width: auto;
+      min-width: 160px;
+      margin: 0;
+      font-weight: 600;
+
+      &[disabled] {
+        opacity: 0.7;
+      }
+
+      ion-icon {
+        margin-right: 8px;
+        font-size: 18px;
+      }
+    }
+
+    // Animación de fade in
+    animation: fadeIn 0.3s ease-out;
+
+    .offline-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 15px;
+      min-height: 48px;
+      
+      ion-icon {
+        font-size: 48px;
+        color: var(--ion-color-danger);
+      }
+
+      ion-spinner {
+        width: 48px;
+        height: 48px;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -45%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  // Ajustar posición en modo landscape
+  @media (orientation: landscape) {
+    .offline-error {
+      top: 50%;
+    }
+  }

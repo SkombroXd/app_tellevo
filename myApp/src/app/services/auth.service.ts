@@ -98,7 +98,7 @@ export class AuthService {
     return userData ? JSON.parse(userData) : null;
   }
 
-  private getStoredCredentials(): { email: string; password: string } | null {
+  public getStoredCredentials(): { email: string; password: string } | null {
     const credentials = localStorage.getItem(this.CREDENTIALS_KEY);
     return credentials ? JSON.parse(credentials) : null;
   }
