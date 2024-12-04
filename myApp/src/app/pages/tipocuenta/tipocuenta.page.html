@@ -1,69 +1,54 @@
 <ion-content [fullscreen]="true">
+  <!-- Saludo -->
+  <div class="header">
+    <h2>Hola!</h2>
+    <p>Selecciona el tipo de cuenta</p>
+  </div>
 
-  <ion-content>
+  <!-- Opciones de Usuario -->
+  <ion-grid>
+    <ion-row class="options-row">
+      <ion-col size="10" size-md="5">
+        <div (click)="optionsEnabled && seleccionarTipoCuenta(false)" class="option-card pasajero">
+          <div class="image-container">
+            <img src="../../../assets/autoescuela.png" alt="Soy Pasajero">
+          </div>
+          <h3>Soy Pasajero</h3>
+          <p>Quiero tener un viaje</p>
+        </div>
+      </ion-col>
+      
+      <ion-col size="10" size-md="5">
+        <div (click)="optionsEnabled && seleccionarTipoCuenta(true)" class="option-card conductor">
+          <div class="image-container">
+            <img src="../../../assets/volante.png" alt="Soy Conductor">
+          </div>
+          <h3>Soy Conductor</h3>
+          <p>Quiero publicar un viaje</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-    <!-- Saludo -->
-
-    <div class="header">
-
-      <h2>Hola!</h2>
-
-      <p>Selecciona el tipo de cuenta</p>
-
+  <!-- Mensaje de error offline -->
+  <div *ngIf="offlineError" class="offline-error">
+    <div class="offline-icon">
+      <ion-icon *ngIf="!isRetrying" name="cloud-offline-outline"></ion-icon>
+      <ion-spinner *ngIf="isRetrying" name="crescent"></ion-spinner>
     </div>
-
-  
-
-    <!-- Opciones de Usuario -->
-
-    <ion-grid>
-
-      <ion-row class="options-row">
-
-        <ion-col size="10" size-md="5">
-
-          <div (click)="seleccionarTipoCuenta(false)" class="option-card pasajero">
-
-            <div class="image-container">
-
-              <img src="../../../assets/autoescuela.png" alt="Soy Pasajero">
-
-            </div>
-
-            <h3>Soy Pasajero</h3>
-
-            <p>Quiero tener un viaje</p>
-
-          </div>
-
-        </ion-col>
-
-        
-
-        <ion-col size="10" size-md="5">
-
-          <div (click)="seleccionarTipoCuenta(true)" class="option-card conductor">
-
-            <div class="image-container">
-
-              <img src="../../../assets/volante.png" alt="Soy Conductor">
-
-            </div>
-
-            <h3>Soy Conductor</h3>
-
-            <p>Quiero publicar un viaje</p>
-
-          </div>
-
-        </ion-col>
-
-      </ion-row>
-
-    </ion-grid>
-
-  </ion-content>
-
+    <p>
+      Sin conexión a Internet.<br>
+      Por favor, verifica tu conexión y vuelve a intentar.
+    </p>
+    
+    <ion-button 
+      (click)="reloadNet()" 
+      [disabled]="isRetrying"
+      expand="block">
+      <ion-icon name="refresh-outline" slot="start"></ion-icon>
+      {{ isRetrying ? 'Reconectando...' : 'Reintentar conexión' }}
+    </ion-button>
+  </div>
 </ion-content>
 
 

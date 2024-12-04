@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFirestoreModule, SETTINGS } from '@angular/fire/compat/firestore';
 
 import { AuthService } from './services/auth.service';
 
@@ -66,7 +66,7 @@ import { CommonModule } from '@angular/common';
 
     HttpClientModule,
 
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
 
     CommonModule
 
@@ -78,7 +78,15 @@ import { CommonModule } from '@angular/common';
 
     AuthService,
 
-    AuthGuard
+    AuthGuard,
+
+    { provide: SETTINGS, useValue: {
+
+      experimentalForceLongPolling: true,
+
+      cacheSizeBytes: 5242880
+
+    }}
 
   ],
 

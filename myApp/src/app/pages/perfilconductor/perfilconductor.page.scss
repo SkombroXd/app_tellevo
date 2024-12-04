@@ -90,3 +90,49 @@
     margin: 20px;
     --border-radius: 10px;
   }
+  
+  /* Estilos para los botones del footer */
+  .footer-links {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .change-account-btn {
+    --border-radius: 10px;
+    --border-width: 2px;
+    --border-color: #3B82F6;
+    --color: #3B82F6;
+    --background: transparent;
+    --background-activated: rgba(59, 130, 246, 0.1);
+    --background-focused: rgba(59, 130, 246, 0.1);
+    --background-hover: rgba(59, 130, 246, 0.1);
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    font-weight: 600;
+    text-transform: none;
+    font-size: 16px;
+  }
+  
+  .logout-btn {
+    --border-radius: 10px;
+    --background: #dc2626;
+    --background-activated: #b91c1c;
+    --background-focused: #b91c1c;
+    --background-hover: #b91c1c;
+    --color: white;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    font-weight: 600;
+    text-transform: none;
+    font-size: 16px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+  
+  /* Ajuste para los íconos dentro de los botones */
+  ion-button ion-icon {
+    margin-right: 8px;
+    font-size: 20px;
+  }

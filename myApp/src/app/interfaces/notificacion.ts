@@ -4,8 +4,8 @@ export interface Notificacion {
   id: string;
   userId: string;
   mensaje: string;
-  fecha?: firebase.firestore.Timestamp;
-  fechaNotificacion: firebase.firestore.Timestamp;
+  fecha: firebase.firestore.Timestamp | string;
+  fechaNotificacion: firebase.firestore.Timestamp | string;
   horaSalida?: string;
   leida: boolean;
   nombrePasajero: string;

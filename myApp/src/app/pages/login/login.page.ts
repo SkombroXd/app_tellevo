@@ -33,7 +33,7 @@ export class LoginPage {
 
     try {
       await this.authService.login(this.usuario.email, this.usuario.password);
-      // La redirección la maneja el servicio de auth
+      console.log('Login completado, esperando navegación...');
     } catch (error: any) {
       let mensaje = 'Error al iniciar sesión';
       if (error.code === 'auth/user-not-found') {

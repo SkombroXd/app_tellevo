@@ -22,8 +22,10 @@
           color="primary" 
           class="travel-button" 
           (click)="reservarViaje(viaje)" 
-          [disabled]="viaje.cantidadp === 0 || viaje.userId === userId">
-          {{ viaje.userId === userId ? 'Tu viaje' : 'VIAJAR' }}
+          [disabled]="viaje.cantidadp === 0 || viaje.userId === userId || tieneReserva(viaje.id)">
+          {{ tieneReserva(viaje.id) ? 'RESERVADO' : 
+             viaje.userId === userId ? 'TU VIAJE' : 
+             viaje.cantidadp === 0 ? 'SIN ASIENTOS' : 'VIAJAR' }}
         </ion-button>
       </ion-card-content>
     </ion-card>
