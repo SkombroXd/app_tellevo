@@ -22,13 +22,6 @@ export class AuthService {
   ) {
     window.addEventListener('offline', () => this.isOffline = true);
     window.addEventListener('online', () => this.isOffline = false);
-
-    // Monitorear el estado de autenticación
-    this.AFauth.authState.subscribe(user => {
-      if (user) {
-        this.router.navigateByUrl('/tipocuenta');
-      }
-    });
   }
 
   private async offlineLogin(email: string, contrasena: string) {
@@ -39,7 +32,21 @@ export class AuthService {
         storedCredentials.email === email && 
         storedCredentials.password === contrasena) {
       console.log('Login offline exitoso');
-      await this.router.navigateByUrl('/tipocuenta', { replaceUrl: true });
+      
+      try {
+        // Intentar navegación directa
+        await this.router.navigate(['/tipocuenta']);
+        console.log('Navegación a tipocuenta completada');
+      } catch (error) {
+        console.error('Error en navegación:', error);
+        // Intentar navegación con timeout como fallback
+        setTimeout(() => {
+          this.router.navigate(['/tipocuenta']).catch(err => 
+            console.error('Error en navegación con timeout:', err)
+          );
+        }, 100);
+      }
+
       return storedUser;
     }
     
@@ -93,7 +100,7 @@ export class AuthService {
     localStorage.setItem(this.CREDENTIALS_KEY, JSON.stringify({ email, password }));
   }
 
-  private getStoredUser(): Usuario | null {
+  public getStoredUser(): Usuario | null {
     const userData = localStorage.getItem(this.STORAGE_KEY);
     return userData ? JSON.parse(userData) : null;
   }
@@ -106,6 +113,7 @@ export class AuthService {
   async logout() {
     try {
       await this.AFauth.signOut();
+      // No limpiamos localStorage para mantener datos offline
       this.router.navigate(['/login']);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
@@ -135,15 +143,18 @@ export class AuthService {
     }
   }
 
-  getCurrentUser(): Promise<firebase.User | null> {
-    return new Promise((resolve, reject) => {
-      const unsubscribe = this.AFauth.onAuthStateChanged(user => {
-        if (unsubscribe) {
-          Promise.resolve(unsubscribe).then(fn => fn());
-        }
-        resolve(user);
-      }, reject);
-    });
+  async getCurrentUser(): Promise<firebase.User | null> {
+    try {
+      // Si estamos offline, usar datos almacenados
+      if (!navigator.onLine) {
+        const storedUser = this.getStoredUser();
+        return storedUser ? { uid: storedUser.id } as firebase.User : null;
+      }
+      return this.AFauth.currentUser;
+    } catch (error) {
+      console.error('Error en getCurrentUser:', error);
+      return null;
+    }
   }
 }
 
